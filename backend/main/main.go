@@ -1,45 +1,29 @@
 package main
 
 import (
+	"TP-Back-Planity/web/config"
+	handlers "TP-Back-Planity/web/handlers"
+	database "TP-Back-Planity/web/store"
 	"fmt"
-	"database/sql"
-	"github.com/go-sql-driver/mysql"
 	"log"
+	"net/http"
 )
 
 func main() {
+	fmt.Println("Hello from the backend!")
 
-	fmt.Println("test")
-
-	conf := mysql.Config{
-		User: 	"user",
-		Passwd: "password",
-		Net: 	"tcp",
-		Addr: 	"localhost:3307",
-		DBName: "mydb",
-		AllowNativePasswords: true,
-	}
-
-	db, err := sql.Open("mysql", conf.FormatDSN())
-
+	db, err := config.ConnectToDB()
 	if err != nil {
-
-		log.Fatal(err)
+		log.Fatalf("Erreur lors de la connexion à la base de données : %v", err)
 	}
 
 	defer db.Close()
 
-	if err = db.Ping(); err != nil {
-		log.Fatal(err)
-	}
+	store := database.NewStore(db)
+	mux := handlers.NewHandler(store)
 
-	// Test d'insertion
-	db.QueryRow("INSERT INTO users (name) VALUES ('NomUtilisateur');")
-	db.QueryRow("INSERT INTO Client (firstName, lastName, email, password) VALUES ('John', 'Doe', 'john.doe@example.com', 'motdepasse123');")
-
+	err = http.ListenAndServe(":8081", mux)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("Erreur lors du lancement du serveur : %v", err)
 	}
-
-	fmt.Println("on est co ww")
 }
