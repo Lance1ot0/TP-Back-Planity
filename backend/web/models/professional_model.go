@@ -7,5 +7,5 @@ type Professional struct {
 	Email          string `json:"email"`
 	Phone          string `json:"phone"`
 	Address        string `json:"address"`
-	password       string `json:"password"`
+	Password       string `json:"password"`
 }

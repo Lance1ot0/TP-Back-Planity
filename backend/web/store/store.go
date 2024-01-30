@@ -7,10 +7,12 @@ import (
 
 func NewStore(db *sql.DB) *Store {
 	return &Store{
-		Client: NewClientStore(db), // Replace 'db' with the actual *sql.DB instance
+		Client:       NewClientStore(db),       // Replace 'db' with the actual *sql.DB instance
+		Professional: NewProfessionalStore(db), // Replace 'db' with the actual *sql.DB instance
 	}
 }
 
 type Store struct {
-	Client inter.ClientStoreInterface
+	Client       inter.ClientStoreInterface
+	Professional inter.ProfessionalStoreInterface
 }
