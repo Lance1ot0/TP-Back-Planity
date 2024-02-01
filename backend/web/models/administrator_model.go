@@ -5,5 +5,5 @@ type Administrator struct {
 	Firstname       string `json:"firstname"`
 	Lastname        string `json:"lastname"`
 	Email           string `json:"email"`
-	password        string `json:"password"`
+	Password        string `json:"password"`
 }

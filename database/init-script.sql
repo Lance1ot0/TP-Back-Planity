@@ -100,5 +100,6 @@ CREATE TABLE IF NOT EXISTS request (
 );
 
 INSERT INTO administrator (firstname, lastname, email, password) VALUES ('admin', 'admin', 'admin@planity.com', 'admin');
+INSERT INTO administrator (firstname, lastname, email, password) VALUES ('dylan', 'lgvn', 'dylan@planity.com', 'admin');
 INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES ('John', 'Doe', 'pro@planity.com', '0689766371', '1 Rue des Monstres, Paris, 75016', 'password');
 INSERT INTO client (firstname, lastname, email, password) VALUES ('Jane', 'Doe', 'client@planity.com', 'password');
