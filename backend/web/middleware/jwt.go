@@ -46,6 +46,6 @@ func generateRandomKey(length int) (string, error) {
 
 	// Encodez les octets aléatoires en base64 pour obtenir une clé lisible
 	key := base64.StdEncoding.EncodeToString(keyBytes)
-
+	// ---
 	return key, nil
 }
