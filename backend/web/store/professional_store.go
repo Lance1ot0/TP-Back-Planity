@@ -108,3 +108,26 @@ func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (
 
 	return int(id), nil
 }
+
+func (ps *ProfessionalStore) GetPasswordHash(id int) (string, error) {
+	var password string
+
+	rows, err := ps.Query("SELECT password FROM professional WHERE professionalID = ?", id)
+	if err != nil {
+		return "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&password); err != nil {
+			return "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", err
+	}
+
+	return password, nil
+}
