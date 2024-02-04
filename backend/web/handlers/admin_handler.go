@@ -2,10 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
-	"net/http"
 	"TP-Back-Planity/web/models"
 	"TP-Back-Planity/web/utils"
+	"TP-Back-Planity/web/middleware"
 	"github.com/go-chi/chi"
+	"net/http"
 	
 )
 
@@ -41,16 +42,35 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 			return
 		}
 
-		success, err := h.Store.Admin.LoginAdmin(email, password)
-		if err != nil {
+		id, err := h.Store.Admin.LoginAdmin(email, password)
+		if err != nil{
+
+			if id == 0 {
+				writer.WriteHeader(http.StatusUnauthorized)
+				writer.Write([]byte("Authentication failed"))
+				return 
+			}
+
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		response := map[string]interface{}{"success": success}
-		err = json.NewEncoder(writer).Encode(response)
+
+		token, err := middleware.GenerateJWT(id)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
+		} else {
+			err = json.NewEncoder(writer).Encode(struct {
+				Status string `json:"status"`
+				Token  string `json:"token"`
+			}{
+				Status: "success",
+				Token:  token,
+			})
+			if err != nil {
+				http.Error(writer, err.Error(), http.StatusInternalServerError)
+				return
+			}
 		}
 	}
 }

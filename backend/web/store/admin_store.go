@@ -84,12 +84,13 @@ func (as *AdminStore) GetAdminByEmail(email string) (models.Administrator, error
 	return administrator, nil
 }
 
-func (as *AdminStore) LoginAdmin(email string, password string) (bool, error) {
-	var count int
-	err := as.QueryRow("SELECT COUNT(*) FROM administrator WHERE email = ? AND password = ?", email, password).Scan(&count)
+func (as *AdminStore) LoginAdmin(email string, password string) (int, error) {
+	var id int
+	err := as.QueryRow("SELECT administratorID FROM administrator WHERE email = ? AND password = ?", email, password).Scan(&id)
 
 	if err != nil {
-		return false, err
+		return 0, err
 	}
-	return count > 0, nil
+
+	return id, nil
 }
