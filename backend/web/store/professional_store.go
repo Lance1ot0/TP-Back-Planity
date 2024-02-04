@@ -86,6 +86,11 @@ func (ps *ProfessionalStore) GetProfessionalByEmail(email string) (models.Profes
 }
 
 func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (int, error) {
+	if professional.Firstname == "" || professional.Lastname == "" || professional.Email == "" ||
+		professional.Phone == "" || professional.Address == "" || professional.Password == "" {
+		return 0, fmt.Errorf("All fields must be completed")
+	}
+
 	pro, _ := ps.GetProfessionalByEmail(professional.Email)
 	if pro.Email != "" {
 		return 0, fmt.Errorf("Email already exist")
