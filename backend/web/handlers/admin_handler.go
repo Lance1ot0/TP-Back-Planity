@@ -7,6 +7,7 @@ import (
 	"TP-Back-Planity/web/middleware"
 	"github.com/go-chi/chi"
 	"net/http"
+	"strconv"
 )
 
 func (h *Handler) GetAdminByEmail() http.HandlerFunc {
@@ -82,6 +83,33 @@ func (h *Handler) ListRequests() http.HandlerFunc {
 		requests, _ := h.Store.Admin.ListRequests()
 		err := json.NewEncoder(writer).Encode(requests)
 		
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) UpdateRequest() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+
+		var status string
+
+		item := models.Request{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+		status = item.RequestStatus
+		writer.Header().Set("Content-Type", "application/json")
+		QueryId := chi.URLParam(request, "id")
+
+		id, _ := strconv.Atoi(QueryId)
+
+		requestSalon, _ := h.Store.Admin.UpdateRequest(id, status)
+		err = json.NewEncoder(writer).Encode(requestSalon)
+
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

@@ -97,7 +97,8 @@ func (as *AdminStore) LoginAdmin(email string, password string) (int, error) {
 
 func (as *AdminStore) ListRequests() ([]models.Request, error) {
 	var requests []models.Request
-	rows, err := as.Query("SELECT * FROM request WHERE status = pending")
+	rows, err := as.Query("SELECT * FROM request WHERE request_status = 'pending'")
+
 
     if err != nil {
         return nil, err
@@ -112,10 +113,31 @@ func (as *AdminStore) ListRequests() ([]models.Request, error) {
         }
         requests = append(requests, request)
     }
+
 	
 	if err != nil {
 		return []models.Request{}, err
 	}
 
 	return requests, nil
+}
+
+func (as *AdminStore) UpdateRequest(id int, status string) (bool, error) {
+
+	result, err:= as.Exec("UPDATE request SET request_status = ? WHERE RequestID = ?", status, id)
+
+    if err != nil {
+        return false, err
+    }
+
+	rowsAffected, err := result.RowsAffected()
+    if err != nil {
+        return false, err
+    }
+
+	if rowsAffected == 0 {
+        return false, nil
+    }
+
+	return true, nil
 }

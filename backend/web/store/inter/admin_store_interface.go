@@ -10,4 +10,5 @@ type AdminStoreInterface interface {
 	GetAdminByEmail(email string) (models.Administrator, error)
 	LoginAdmin(username, password string) (int, error)
 	ListRequests() ([]models.Request, error)
+	UpdateRequest(id int, status string) (bool, error)
 }
