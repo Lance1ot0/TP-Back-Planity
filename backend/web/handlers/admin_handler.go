@@ -7,7 +7,6 @@ import (
 	"TP-Back-Planity/web/middleware"
 	"github.com/go-chi/chi"
 	"net/http"
-	
 )
 
 func (h *Handler) GetAdminByEmail() http.HandlerFunc {
@@ -71,6 +70,21 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 				http.Error(writer, err.Error(), http.StatusInternalServerError)
 				return
 			}
+		}
+	}
+}
+
+func (h *Handler) ListRequests() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+
+		writer.Header().Set("Content-Type", "application/json")
+
+		requests, _ := h.Store.Admin.ListRequests()
+		err := json.NewEncoder(writer).Encode(requests)
+		
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
 		}
 	}
 }

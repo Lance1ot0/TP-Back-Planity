@@ -9,5 +9,5 @@ type AdminStoreInterface interface {
 	GetAdminById(id int) (models.Administrator, error)
 	GetAdminByEmail(email string) (models.Administrator, error)
 	LoginAdmin(username, password string) (int, error)
+	ListRequests() ([]models.Request, error)
 }
-

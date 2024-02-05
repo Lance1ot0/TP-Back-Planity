@@ -94,3 +94,28 @@ func (as *AdminStore) LoginAdmin(email string, password string) (int, error) {
 
 	return id, nil
 }
+
+func (as *AdminStore) ListRequests() ([]models.Request, error) {
+	var requests []models.Request
+	rows, err := as.Query("SELECT * FROM request WHERE status = pending")
+
+    if err != nil {
+        return nil, err
+    }
+	
+    defer rows.Close()
+
+    for rows.Next() {
+        var request models.Request
+        if err := rows.Scan(&request.RequestID, &request.ProfessionalID, &request.SalonName, &request.Address, &request.City, &request.PostalCode, &request.RequestDate, &request.RequestStatus); err != nil {
+            return nil, err
+        }
+        requests = append(requests, request)
+    }
+	
+	if err != nil {
+		return []models.Request{}, err
+	}
+
+	return requests, nil
+}
