@@ -40,7 +40,8 @@ CREATE TABLE IF NOT EXISTS employee (
     lastname VARCHAR(255),
     professionalID INT,
     hairSalonID INT,
-    FOREIGN KEY (professionalID) REFERENCES professional(professionalID)
+    FOREIGN KEY (professionalID) REFERENCES professional(professionalID),
+    FOREIGN KEY (hairSalonID) REFERENCES hairSalon(hairSalonID) 
 );
 
 CREATE TABLE IF NOT EXISTS service (
