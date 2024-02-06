@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS service (
     description TEXT,
     price DECIMAL(10,2),
     duration INT,
-    professionalID INT,
-    FOREIGN KEY (professionalID) REFERENCES professional(professionalID)
+    hairSalonID INT,
+    FOREIGN KEY (hairSalonID) REFERENCES hairSalon(hairSalonID)
 );
 
 CREATE TABLE IF NOT EXISTS availability (

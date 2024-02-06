@@ -11,6 +11,7 @@ func NewStore(db *sql.DB) *Store {
 		Professional: NewProfessionalStore(db),
 		Admin:        NewAdminStore(db),
 		Request:      NewRequestStore(db),
+		Service:      NewServiceStore(db),
 	}
 }
 
@@ -19,4 +20,5 @@ type Store struct {
 	Professional inter.ProfessionalStoreInterface
 	Admin        inter.AdminStoreInterface
 	Request      inter.RequestStoreInterface
+	Service      inter.ServiceStoreInterface
 }
