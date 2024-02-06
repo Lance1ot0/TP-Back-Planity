@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS request (
     address VARCHAR(255),
     city VARCHAR(255),
     postal_code VARCHAR(10),
-    request_date DATETIME,
-    request_status ENUM('pending', 'accepted', 'rejected'),
+    request_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    request_status ENUM('pending', 'accepted', 'rejected') DEFAULT 'pending',
     FOREIGN KEY (professionalID) REFERENCES professional(professionalID)
 );
 
