@@ -124,6 +124,8 @@ func (as *AdminStore) ListRequests() ([]models.Request, error) {
 
 func (as *AdminStore) UpdateRequest(id int, status string) (bool, error) {
 
+	var request
+
 	result, err:= as.Exec("UPDATE request SET request_status = ? WHERE RequestID = ?", status, id)
 
     if err != nil {
@@ -141,3 +143,28 @@ func (as *AdminStore) UpdateRequest(id int, status string) (bool, error) {
 
 	return true, nil
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// func (as *AdminStore) GetRequestById(id) ([]models.Request, error) {
+// 	var request models.Administrator
+
+// 	err := as.QueryRow("SELECT * WHERE RequestID = ?", id).Scan(&request)
+
+// 	if err != nil {
+// 		return models.Request{}, err
+// 	}
+
+// 	return request, nil
+// }

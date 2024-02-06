@@ -107,8 +107,33 @@ func (h *Handler) UpdateRequest() http.HandlerFunc {
 
 		id, _ := strconv.Atoi(QueryId)
 
-		requestSalon, _ := h.Store.Admin.UpdateRequest(id, status)
+		if status === "accepted" {
+
+			requestSalon, _ = h.Store.Admin.UpdateRequest(id, status)
+		}
+		else if status === "refused" {
+
+		}
+
+		requestSalon, _ = h.Store.Admin.UpdateRequest(id, status)
+
+		if !requestSalon {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		acceptedRequest, err := h.Store.Admin.GetRequestById(id)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		result, _ = h.Store.Admin.CreateSalon()
+
 		err = json.NewEncoder(writer).Encode(requestSalon)
+
+
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
