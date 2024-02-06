@@ -11,4 +11,6 @@ type AdminStoreInterface interface {
 	LoginAdmin(username, password string) (int, error)
 	ListRequests() ([]models.Request, error)
 	UpdateRequest(id int, status string) (bool, error)
+	GetRequestById(id int) (models.Request, error)
+	CreateSalon(models.Request) (int, error)
 }

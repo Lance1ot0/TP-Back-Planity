@@ -36,7 +36,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.Get("/email/{email}", handler.GetAdminByEmail())
 			r.Post("/login", handler.LoginAdmin())
 			r.Get("/requests", handler.ListRequests())
-			r.Put("/request/{id}", handler.UpdateRequest())
+			r.Put("/request/{id}", handler.HandleRequest())
 		})
 
 		r.Route("/professional", func(r chi.Router) {

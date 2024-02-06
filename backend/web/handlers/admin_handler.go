@@ -1,13 +1,14 @@
 package handlers
 
 import (
-	"encoding/json"
+	"TP-Back-Planity/web/middleware"
 	"TP-Back-Planity/web/models"
 	"TP-Back-Planity/web/utils"
-	"TP-Back-Planity/web/middleware"
-	"github.com/go-chi/chi"
+	"encoding/json"
 	"net/http"
 	"strconv"
+
+	"github.com/go-chi/chi"
 )
 
 func (h *Handler) GetAdminByEmail() http.HandlerFunc {
@@ -90,7 +91,7 @@ func (h *Handler) ListRequests() http.HandlerFunc {
 	}
 }
 
-func (h *Handler) UpdateRequest() http.HandlerFunc {
+func (h *Handler) HandleRequest() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 
 		var status string
@@ -107,34 +108,34 @@ func (h *Handler) UpdateRequest() http.HandlerFunc {
 
 		id, _ := strconv.Atoi(QueryId)
 
-		if status === "accepted" {
+		requestSalon, err := h.Store.Admin.UpdateRequest(id, status)
 
-			requestSalon, _ = h.Store.Admin.UpdateRequest(id, status)
-		}
-		else if status === "refused" {
-
-		}
-
-		requestSalon, _ = h.Store.Admin.UpdateRequest(id, status)
-
-		if !requestSalon {
+		if err != nil{
 			http.Error(writer, err.Error(), http.StatusBadRequest)
 			return
 		}
 
-		acceptedRequest, err := h.Store.Admin.GetRequestById(id)
-
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
+		if !requestSalon {
+			http.Error(writer, "Invalid request", http.StatusBadRequest)
 			return
 		}
 
-		result, _ = h.Store.Admin.CreateSalon()
+		if status == "accepted" {
+		
+			acceptedRequest, err := h.Store.Admin.GetRequestById(id)
 
-		err = json.NewEncoder(writer).Encode(requestSalon)
+			if err != nil {
+				http.Error(writer, err.Error(), http.StatusInternalServerError)
+				return
+			}
 
+			result, _ := h.Store.Admin.CreateSalon(acceptedRequest)
+			err = json.NewEncoder(writer).Encode(result)
+		} else {
+			err = json.NewEncoder(writer).Encode(status)
+		}  
 
-
+	
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
