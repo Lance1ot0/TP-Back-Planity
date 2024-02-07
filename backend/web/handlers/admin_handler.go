@@ -5,6 +5,7 @@ import (
 	"TP-Back-Planity/web/models"
 	"TP-Back-Planity/web/utils"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -28,7 +29,7 @@ func (h *Handler) GetAdminByEmail() http.HandlerFunc {
 
 func (h *Handler) LoginAdmin() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		
+
 		writer.Header().Set("Content-Type", "application/json")
 
 		item := models.Administrator{}
@@ -44,12 +45,12 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 		}
 
 		id, err := h.Store.Admin.LoginAdmin(email, password)
-		if err != nil{
+		if err != nil {
 
 			if id == 0 {
 				writer.WriteHeader(http.StatusUnauthorized)
 				writer.Write([]byte("Authentication failed"))
-				return 
+				return
 			}
 
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -83,7 +84,7 @@ func (h *Handler) ListRequests() http.HandlerFunc {
 
 		requests, _ := h.Store.Admin.ListRequests()
 		err := json.NewEncoder(writer).Encode(requests)
-		
+
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
@@ -110,7 +111,7 @@ func (h *Handler) HandleRequest() http.HandlerFunc {
 
 		requestSalon, err := h.Store.Admin.UpdateRequest(id, status)
 
-		if err != nil{
+		if err != nil {
 			http.Error(writer, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -121,7 +122,7 @@ func (h *Handler) HandleRequest() http.HandlerFunc {
 		}
 
 		if status == "accepted" {
-		
+
 			acceptedRequest, err := h.Store.Admin.GetRequestById(id)
 
 			if err != nil {
@@ -133,9 +134,39 @@ func (h *Handler) HandleRequest() http.HandlerFunc {
 			err = json.NewEncoder(writer).Encode(result)
 		} else {
 			err = json.NewEncoder(writer).Encode(status)
-		}  
+		}
 
-	
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) GetHairSalon() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		var name string
+
+		item := models.HairSalon{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		name = item.Name
+		fmt.Println(name)
+		writer.Header().Set("Content-Type", "application/json")
+
+		hairSalon, err := h.Store.Client.GetHairSalon(name)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = json.NewEncoder(writer).Encode(hairSalon)
+
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

@@ -7,4 +7,5 @@ import (
 type ClientStoreInterface interface {
 	GetClient() ([]models.Client, error)
 	GetClientById(id int) (models.Client, error)
+	GetHairSalon(name string) ([]models.HairSalon, error)
 }

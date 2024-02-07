@@ -60,3 +60,33 @@ func (cs *ClientStore) GetClientById(id int) (models.Client, error) {
 
 	return client, nil
 }
+
+func (cs *ClientStore) GetHairSalon(name string) ([]models.HairSalon, error) {
+
+	var salons []models.HairSalon
+
+	query := "SELECT * FROM hairSalon WHERE name LIKE ?"
+
+	rows, err := cs.Query(query, name+"%")
+
+	if err != nil {
+		return []models.HairSalon{}, err
+	}
+
+	var salon models.HairSalon
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&salon.HairSalonID, &salon.Name, &salon.Address, &salon.City, &salon.PostalCode, &salon.ProfessionalID); err != nil {
+			return []models.HairSalon{}, err
+		}
+		salons = append(salons, salon)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.HairSalon{}, err
+	}
+
+	return salons, nil
+}
