@@ -81,11 +81,13 @@ CREATE TABLE IF NOT EXISTS reservation (
     timeSlotID INT,
     clientID INT,
     serviceID INT,
+    hairSalonID INT,
     reservation_date DATETIME,
-    reservation_status ENUM('pending', 'confirmed', 'cancelled'),
+    reservation_status ENUM('confirmed', 'cancelled'),
     FOREIGN KEY (timeSlotID) REFERENCES timeSlot(timeSlotID),
     FOREIGN KEY (clientID) REFERENCES client(clientID),
-    FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+    FOREIGN KEY (serviceID) REFERENCES service(serviceID),
+    FOREIGN KEY (hairSalonID) REFERENCES hairSalon(hairSalonID)
 );
 
 CREATE TABLE IF NOT EXISTS request (
