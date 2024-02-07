@@ -2,7 +2,7 @@ import "./App.css";
 import useSWR from "swr";
 import { useState } from "react";
 
-export const ENDPOINT = "http://localhost:8081/api";
+export const API_URL = "http://localhost:8081/api";
 
 export interface Salon {
   requestID: number;
@@ -16,7 +16,7 @@ export interface Salon {
 }
 
 const getAllRequests = (url: string) =>
-  fetch(`${ENDPOINT}/${url}`, {
+  fetch(`${API_URL}/${url}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -33,7 +33,7 @@ async function createSalonRequest(
   },
   mutate: () => void
 ) {
-  const updated = await fetch(`${ENDPOINT}/professional/request`, {
+  const updated = await fetch(`${API_URL}/professional/request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
