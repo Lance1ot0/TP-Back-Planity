@@ -28,6 +28,8 @@ func NewHandler(store *database.Store) *chi.Mux {
 		r.Route("/client", func(r chi.Router) {
 			r.Get("/", handler.GetClient())
 			r.Get("/{id}", handler.GetClientById())
+			r.Post("/register", handler.AddClient())
+			r.Post("/login", handler.LoginClient())
 		})
 
 		r.Route("/admin", func(r chi.Router) {
