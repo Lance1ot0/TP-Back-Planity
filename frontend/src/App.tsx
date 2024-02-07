@@ -33,12 +33,30 @@ async function createSalonRequest(
   },
   mutate: () => void
 ) {
-  const updated = await fetch(`${API_URL}/professional/request`, {
+  const created = await fetch(`${API_URL}/professional/request`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(values),
+  }).then((r) => r.json());
+
+  if (created) {
+    await mutate();
+  }
+}
+
+async function updateRequest(
+  id: number,
+  RequestStatus: { RequestStatus: string },
+  mutate: () => void
+) {
+  const updated = await fetch(`${API_URL}/admin/request/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(RequestStatus),
   }).then((r) => r.json());
 
   if (updated) {
@@ -59,19 +77,53 @@ function App() {
           <h2>Request for admin:</h2>
           <ul>
             {data.map((salon: Salon) => (
-              <li key={salon.requestID}>
+              <li key={salon.requestID} className="li">
                 {salon.salonName} : {salon.requestStatus}
+                <div className="button-wrapper">
+                  {" "}
+                  <button
+                    onClick={() => {
+                      updateRequest(
+                        salon.requestID,
+                        {
+                          RequestStatus: "accepted",
+                        },
+                        mutate
+                      );
+                    }}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => {
+                      updateRequest(
+                        salon.requestID,
+                        {
+                          RequestStatus: "rejected",
+                        },
+                        mutate
+                      );
+                    }}
+                  >
+                    Decline
+                  </button>
+                </div>
               </li>
-            ))}
+            ))}{" "}
           </ul>
         </div>
       )}
 
-      <input
-        type="text"
-        value={newSalonName}
-        onChange={(e) => setNewSalonName(e.target.value)}
-      />
+      <h2>Request for Pro:</h2>
+
+      <span>
+        Salon Name:
+        <input
+          type="text"
+          value={newSalonName}
+          onChange={(e) => setNewSalonName(e.target.value)}
+        />
+      </span>
 
       <button
         onClick={() => {
