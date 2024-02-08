@@ -13,6 +13,7 @@ func NewStore(db *sql.DB) *Store {
 		Employee:     NewEmployeeStore(db),
 		Request:      NewRequestStore(db),
 		Service:      NewServiceStore(db),
+		Availability: NewAvailabilityStore(db),
 	}
 }
 
@@ -23,4 +24,5 @@ type Store struct {
 	Employee     inter.EmployeeStoreInterface
 	Request      inter.RequestStoreInterface
 	Service      inter.ServiceStoreInterface
+	Availability inter.AvailabilityStoreInterface
 }

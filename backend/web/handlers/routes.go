@@ -49,6 +49,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.Post("/employee", handler.AddEmploye())
 			r.Post("/service", handler.AddService())
 			r.Post("/request", handler.RequestAddEstablishment())
+			r.Post("/availability/{id}", handler.AddAvailability())
 		})
 	})
 
