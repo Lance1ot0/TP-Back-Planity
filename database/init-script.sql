@@ -63,29 +63,18 @@ CREATE TABLE IF NOT EXISTS availability (
     FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
 );
 
-CREATE TABLE IF NOT EXISTS timeSlot (
-    timeSlotID INT AUTO_INCREMENT PRIMARY KEY,
-    date DATE,
-    start_time TIME,
-    end_time TIME,
-    professionalID INT,
-    employeeID INT,
-    availabilityID INT,
-    FOREIGN KEY (professionalID) REFERENCES professional(professionalID),
-    FOREIGN KEY (employeeID) REFERENCES employee(employeeID),
-    FOREIGN KEY (availabilityID) REFERENCES availability(availabilityID)
-);
-
 CREATE TABLE IF NOT EXISTS reservation (
     reservationID INT AUTO_INCREMENT PRIMARY KEY,
-    timeSlotID INT,
+    employeeID INT,
     clientID INT,
     serviceID INT,
-    reservation_date DATETIME,
-    reservation_status ENUM('pending', 'confirmed', 'cancelled'),
-    FOREIGN KEY (timeSlotID) REFERENCES timeSlot(timeSlotID),
+    hairSalonID INT,
+    date DATETIME,
+    status ENUM('confirmed', 'canceled', 'expired') DEFAULT 'confirmed',
     FOREIGN KEY (clientID) REFERENCES client(clientID),
-    FOREIGN KEY (serviceID) REFERENCES service(serviceID)
+    FOREIGN KEY (serviceID) REFERENCES service(serviceID),
+    FOREIGN KEY (hairSalonID) REFERENCES hairSalon(hairSalonID),
+    FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
 );
 
 CREATE TABLE IF NOT EXISTS request (
@@ -105,6 +94,20 @@ INSERT INTO administrator (firstname, lastname, email, password) VALUES ('dylan'
 INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES ('John', 'Doe', 'pro@planity.com', '0689766371', '1 Rue des Monstres, Paris, 75016', 'password');
 INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES ('dwgv', 'dgwd', 'proff@planity.com', '0689766371', '1 Rue des Monstres, Paris, 75016', 'password');
 INSERT INTO client (firstname, lastname, email, password) VALUES ('Jane', 'Doe', 'client@planity.com', 'password');
+
+
+
 INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (1, 'Salon coiffure 1', '1 Rue des Triple Monstres', 'Paris', '75017', '2024-02-05 14:30:00', 'pending');
+INSERT INTO hairSalon (name, address, city, postal_code, professionalID)
+VALUES ('Salon de coiffure XYZ', '123 Rue de la Beauté', 'Paris', '75001', 1);
+
+
+INSERT INTO service (name, description, price, duration, hairSalonID) 
+VALUES ('Coupe de cheveux', 'Une coupe de cheveux standard pour hommes ou femmes', 30.00, 30, 1);
+
+INSERT INTO employee (firstname, lastname, professionalID, hairSalonID)
+VALUES ('John', 'Doe', 1, 1);
+
+
 INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (2, 'Salon coiffure 2', '1 Rue des Double Monstres', 'Paris', '75012', '2024-02-05 14:30:00', 'pending');
 INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (2, 'Salon coiffure 3', '1 Rue des quadruple Monstres', 'Paris', '75015', '2024-02-05 14:30:00', 'pending');
