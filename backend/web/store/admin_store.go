@@ -99,22 +99,20 @@ func (as *AdminStore) ListRequests() ([]models.Request, error) {
 	var requests []models.Request
 	rows, err := as.Query("SELECT * FROM request WHERE request_status = 'pending'")
 
+	if err != nil {
+		return nil, err
+	}
 
-    if err != nil {
-        return nil, err
-    }
-	
-    defer rows.Close()
+	defer rows.Close()
 
-    for rows.Next() {
-        var request models.Request
-        if err := rows.Scan(&request.RequestID, &request.ProfessionalID, &request.SalonName, &request.Address, &request.City, &request.PostalCode, &request.RequestDate, &request.RequestStatus); err != nil {
-            return nil, err
-        }
-        requests = append(requests, request)
-    }
+	for rows.Next() {
+		var request models.Request
+		if err := rows.Scan(&request.RequestID, &request.ProfessionalID, &request.SalonName, &request.Address, &request.City, &request.PostalCode, &request.RequestDate, &request.RequestStatus); err != nil {
+			return nil, err
+		}
+		requests = append(requests, request)
+	}
 
-	
 	if err != nil {
 		return []models.Request{}, err
 	}
@@ -126,20 +124,20 @@ func (as *AdminStore) UpdateRequest(id int, status string) (bool, error) {
 
 	// var request
 
-	result, err:= as.Exec("UPDATE request SET request_status = ? WHERE RequestID = ?", status, id)
+	result, err := as.Exec("UPDATE request SET request_status = ? WHERE RequestID = ?", status, id)
 
-    if err != nil {
-        return false, err
-    }
+	if err != nil {
+		return false, err
+	}
 
 	rowsAffected, err := result.RowsAffected()
-    if err != nil {
-        return false, err
-    }
+	if err != nil {
+		return false, err
+	}
 
 	if rowsAffected == 0 {
-        return false, nil
-    }
+		return false, nil
+	}
 
 	return true, nil
 }
@@ -153,11 +151,10 @@ func (as *AdminStore) GetRequestById(id int) (models.Request, error) {
 		return models.Request{}, err
 	}
 
-
 	return request, nil
 }
 
-func  (as *AdminStore) CreateSalon(request models.Request) (int, error) {
+func (as *AdminStore) CreateSalon(request models.Request) (int, error) {
 	result, err := as.Exec("INSERT INTO hairSalon (name, address, city, postal_code, professionalID) VALUES (?, ?, ?, ?, ?)", request.SalonName, request.Address, request.City, request.PostalCode, request.ProfessionalID)
 	if err != nil {
 		return 0, err
