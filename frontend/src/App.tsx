@@ -1,12 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
-import s from './App.module.css';
+import style from './App.module.css';
 
-import AdminPage from './components/pages/adminPage/adminPage';
+import AdminPage from './components/pages/adminPage/AdminPage';
 import LoginAdmin from './components/login/loginAdmin/LoginAdmin';
 
 function App() {
   return (
-    <div className={s.appWrapper}>
+    <div className={style.appWrapper}>
       <Routes>
         <Route path="/" element={""} />
         <Route path="/admin" element={<AdminPage />} />
