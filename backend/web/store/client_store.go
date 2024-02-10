@@ -179,3 +179,30 @@ func (cs *ClientStore) AddReservation(reservation models.Reservation) (models.Re
 
 	return reservation, nil
 }
+
+func (cs *ClientStore) ListReservations(clientId int) ([]models.Reservation, error) {
+
+	var reservations []models.Reservation
+	var reservation models.Reservation
+
+	rows, err := cs.Query("SELECT * FROM reservation WHERE clientID = ?", clientId)
+	if err != nil {
+		return []models.Reservation{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&reservation.ReservationID, &reservation.EmployeeID, &reservation.HairSalonID, &reservation.ClientID, &reservation.ServiceID, &reservation.ReservationDate, &reservation.ReservationStatus); err != nil {
+			return []models.Reservation{}, err
+		}
+
+		reservations = append(reservations, reservation)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Reservation{}, err
+	}
+
+	return reservations, nil
+}

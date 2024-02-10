@@ -174,3 +174,28 @@ func (h *Handler) AddReservation() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *Handler) ListReservations() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+
+		var reservations []models.Reservation
+
+		writer.Header().Set("Content-Type", "application/json")
+		QueryId := chi.URLParam(request, "clientId")
+
+		clientId, _ := strconv.Atoi(QueryId)
+
+		reservations, err := h.Store.Client.ListReservations(clientId)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(struct {
+			Reservation []models.Reservation `json:"data"`
+		}{
+			Reservation: reservations,
+		})
+	}
+}
