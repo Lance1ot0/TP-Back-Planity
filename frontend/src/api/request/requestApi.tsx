@@ -3,6 +3,7 @@ fetch(`http://127.0.0.1:8081/api/${url}`, {
   method: "GET",
   headers: {
     "Content-Type": "application/json",
+    "Authorization": `Bearer ${localStorage.getItem('token')}`,
   },
 }).then((res) => res.json());
 
@@ -11,6 +12,7 @@ export async function updateRequest(id: number, RequestStatus: { RequestStatus: 
         method: "PUT",
         headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(RequestStatus),
     }).then((r) => r.json());
