@@ -160,3 +160,22 @@ func (cs *ClientStore) GetPasswordHash(id int) (string, error) {
 
 	return password, nil
 }
+
+func (cs *ClientStore) AddReservation(reservation models.Reservation) (models.Reservation, error) {
+
+	res, err := cs.Exec("INSERT INTO reservation (employeeID, clientID, serviceID, hairSalonID, date) VALUES (?, ?, ?, ?, ?)", reservation.EmployeeID, reservation.HairSalonID, reservation.ClientID, reservation.ServiceID, reservation.ReservationDate)
+	if err != nil {
+		return models.Reservation{}, err
+	}
+
+	reservationID, err := res.LastInsertId()
+	fmt.Println(res.RowsAffected())
+	if err != nil {
+		return models.Reservation{}, err
+	}
+
+	reservation.ReservationID = int(reservationID)
+	reservation.ReservationStatus = "confirmed"
+
+	return reservation, nil
+}

@@ -11,4 +11,5 @@ type ClientStoreInterface interface {
 	GetClientByEmail(email string) (models.Client, error)
 	AddClient(client models.Client) (int, error)
 	GetPasswordHash(id int) (string, error)
+	AddReservation(reservation models.Reservation) (models.Reservation, error)
 }

@@ -146,3 +146,31 @@ func (h *Handler) LoginClient() http.HandlerFunc {
 		}
 	}
 }
+
+func (h *Handler) AddReservation() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		item := models.Reservation{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		reservation, err := h.Store.Client.AddReservation(item)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(struct {
+			Status      string             `json:"status"`
+			Reservation models.Reservation `json:"data"`
+		}{
+			Status:      "success",
+			Reservation: reservation,
+		})
+	}
+}
