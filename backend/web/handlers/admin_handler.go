@@ -64,9 +64,11 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 		} else {
 			err = json.NewEncoder(writer).Encode(struct {
 				Status string `json:"status"`
+				Role   string `json:"role"`
 				Token  string `json:"token"`
 			}{
 				Status: "success",
+				Role:   "admin",
 				Token:  token,
 			})
 			if err != nil {

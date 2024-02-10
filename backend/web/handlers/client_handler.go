@@ -134,9 +134,11 @@ func (h *Handler) LoginClient() http.HandlerFunc {
 		} else {
 			err = json.NewEncoder(writer).Encode(struct {
 				Status string `json:"status"`
+				Role   string `json:"role"`
 				Token  string `json:"token"`
 			}{
 				Status: "success",
+				Role:   "client",
 				Token:  token,
 			})
 			if err != nil {

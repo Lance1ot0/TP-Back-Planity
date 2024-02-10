@@ -85,28 +85,28 @@ func (ps *ProfessionalStore) GetProfessionalByEmail(email string) (models.Profes
 	return professional, nil
 }
 
-func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (int, error) {
+func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (bool, error) {
 	if professional.Firstname == "" || professional.Lastname == "" || professional.Email == "" ||
 		professional.Phone == "" || professional.Address == "" || professional.Password == "" {
-		return 0, fmt.Errorf("All fields must be completed")
+		return false, fmt.Errorf("All fields must be completed")
 	}
 
 	pro, _ := ps.GetProfessionalByEmail(professional.Email)
 	if pro.Email != "" {
-		return 0, fmt.Errorf("Email already exist")
+		return false, fmt.Errorf("Email already exist")
 	}
 
-	res, err := ps.Exec("INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES (?, ?, ?, ?, ?, ?)", professional.Firstname, professional.Lastname, professional.Email, professional.Phone, professional.Address, professional.Password)
+	_, err := ps.Exec("INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES (?, ?, ?, ?, ?, ?)", professional.Firstname, professional.Lastname, professional.Email, professional.Phone, professional.Address, professional.Password)
 	if err != nil {
-		return 0, err
+		return false, err
 	}
 
-	id, err := res.LastInsertId()
-	if err != nil {
-		return 0, err
-	}
+	// id, err := res.LastInsertId()
+	// if err != nil {
+	// 	return false, err
+	// }
 
-	return int(id), nil
+	return true, nil
 }
 
 func (ps *ProfessionalStore) GetPasswordHash(id int) (string, error) {

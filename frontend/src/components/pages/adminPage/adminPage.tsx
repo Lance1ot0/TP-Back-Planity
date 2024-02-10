@@ -16,37 +16,39 @@ export interface Salon {
     requestStatus: string;
   }
 
-
-
 export default function AdminPage() {
     const navigate = useNavigate();
+    const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
     const { data, mutate } = useSWR("admin/requests", getAllRequests);
 
-    console.log(data);
-
     const logout = () => {
+        localStorage.removeItem('role');
         localStorage.removeItem('token');
+        setRole(null);
         setToken(null);
         navigate('/admin/login');
     };
 
     useEffect(() => {
+        const role = localStorage.getItem('role');
         const storedToken = localStorage.getItem('token');
-        if (storedToken) {
+        if (role && storedToken) {
+            setRole(role);
             setToken(storedToken);
         } else {
             navigate('/admin/login'); 
         }
     }, [navigate]);
 
-    if (!token) {
+    if (!role || role !== 'admin' || !token) {
+        navigate('/admin/login');
         return null;
     }
 
     return (
-        <div className={style.adminContainer}>
-            <div className={style.adminMenu}>
+        <div className={style.container}>
+            <div className={style.menu}>
                 <h1 style={{ fontSize: '38px' }}>Admin Page</h1>
                 <button
                     className={style.logoutButton}
@@ -54,10 +56,10 @@ export default function AdminPage() {
                 >Déconnexion</button>
             </div>
 
-            <div className={style.adminMain}>
+            <div className={style.main}>
                 <div>
                     <h2 style={{marginBottom: '20px', fontSize: '32px'}}>Demandes en cours</h2>
-                    <table className={style.adminTable}>
+                    <table className={style.table}>
                         <thead>
                             <tr>
                                 <th>Nom de l'établissement</th>
@@ -90,7 +92,7 @@ export default function AdminPage() {
 
                 <div style={{marginTop: '40px'}}>
                     <h2 style={{marginBottom: '20px', fontSize: '32px', color: '#a7c957'}}>Demandes accepté</h2>
-                    <table className={style.adminTable}>
+                    <table className={style.table}>
                         <thead>
                             <tr>
                                 <th>Nom de l'établissement</th>
@@ -119,7 +121,7 @@ export default function AdminPage() {
 
                 <div style={{marginTop: '40px'}}>
                     <h2 style={{marginBottom: '20px', fontSize: '32px', color: '#e63946'}}>Demandes rejeté</h2>
-                    <table className={style.adminTable}>
+                    <table className={style.table}>
                         <thead>
                             <tr>
                                 <th>Nom de l'établissement</th>

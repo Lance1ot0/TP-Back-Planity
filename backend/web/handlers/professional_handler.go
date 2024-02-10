@@ -74,23 +74,22 @@ func (h *Handler) AddProfessional() http.HandlerFunc {
 			return
 		}
 
-		id, err := h.Store.Professional.AddProfessional(item)
+		_, err = h.Store.Professional.AddProfessional(item)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		err = json.NewEncoder(writer).Encode(struct {
-			Status         string `json:"status"`
-			ProfessionalID int    `json:"professionalID"`
+			Status bool `json:"status"`
 		}{
-			Status:         "success",
-			ProfessionalID: id,
+			Status: true,
 		})
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
 	}
 }
 
@@ -112,13 +111,8 @@ func (h *Handler) LoginProfessional() http.HandlerFunc {
 		}
 
 		if professional.ProfessionalID == 0 {
-			err = json.NewEncoder(writer).Encode(struct {
-				Status string `json:"status"`
-				Error  string `json:"error"`
-			}{
-				Status: "error",
-				Error:  "Email not found",
-			})
+			writer.WriteHeader(http.StatusUnauthorized)
+			writer.Write([]byte("Authentication failed"))
 			return
 		}
 
@@ -130,13 +124,8 @@ func (h *Handler) LoginProfessional() http.HandlerFunc {
 
 		_, err = utils.CompareHashAndPassword(password, item.Password)
 		if err != nil {
-			err = json.NewEncoder(writer).Encode(struct {
-				Status string `json:"status"`
-				Error  string `json:"error"`
-			}{
-				Status: "error",
-				Error:  "Password incorrect",
-			})
+			writer.WriteHeader(http.StatusUnauthorized)
+			writer.Write([]byte("Authentication failed"))
 			return
 		}
 
@@ -147,9 +136,11 @@ func (h *Handler) LoginProfessional() http.HandlerFunc {
 		} else {
 			err = json.NewEncoder(writer).Encode(struct {
 				Status string `json:"status"`
+				Role   string `json:"role"`
 				Token  string `json:"token"`
 			}{
 				Status: "success",
+				Role:   "professional",
 				Token:  token,
 			})
 			if err != nil {

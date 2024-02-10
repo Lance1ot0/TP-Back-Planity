@@ -1,7 +1,7 @@
-import { LoginResponse } from "./loginAdminType";
+import { LoginResponse } from "./loginProfessionalType";
 
-export const loginAdminApi = async (email: string, password: string): Promise<LoginResponse> => {
-    const response = await fetch('http://127.0.0.1:8081/api/admin/login', {
+export const loginProfessionalApi = async (email: string, password: string): Promise<LoginResponse> => {
+    const response = await fetch('http://127.0.0.1:8081/api/professional/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

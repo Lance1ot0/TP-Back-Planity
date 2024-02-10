@@ -18,5 +18,4 @@ export async function updateRequest(id: number, RequestStatus: { RequestStatus: 
     if (updated) {
         await mutate();
     }
-    console.log(id, RequestStatus);
 }

@@ -1,11 +1,11 @@
-.adminContainer {
+.container {
   width: 100vw;
   display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.adminMenu {
+.menu {
   width: 100%;
   height: 100px;
   display: flex;
@@ -27,28 +27,28 @@
   transition: 0.3s;
 }
 
-.adminMain {
+.main {
   width: 65%;
 }
 
-.adminTable {
+.table {
   width: 90%;
 }
   
-.adminTable td, .adminTable th {
+.table td, .table th {
   padding: 10px;
   text-align: left;
 }
 
-.adminTable th {
+.table th {
   font-size: 20px;
 }
 
-.adminTable td {
+.table td {
   font-size: 16px;
 }
 
-.adminTable button {
+.table button {
   border: none;
   border-radius: 4px;
   height: 30px;

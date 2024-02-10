@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import style from './LoginAdmin.module.css';
-import { loginAdminApi } from '../../../api/login/loginAdminApi/loginAdminApi';
+import style from './LoginProfessional.module.css';
+import { loginProfessionalApi } from '../../../api/login/loginProfessionalApi/loginProfessionalApi';
 import { useNavigate } from 'react-router-dom';
 
-export default function loginAdmin() {
+export default function loginProfessional() {
     const navigate = useNavigate();
     const  [errorMessage, setErrorMessage] = useState(false);
 
@@ -12,13 +12,13 @@ export default function loginAdmin() {
         const email = (e.target as HTMLFormElement).email.value;
         const password = (e.target as HTMLFormElement).password.value;
 
-        const response = await loginAdminApi(email, password);
+        const response = await loginProfessionalApi(email, password);
         if (response.success) {
             if (response.role && response.token) {
                 localStorage.setItem('role', response.role);
                 localStorage.setItem('token', response.token);
 
-                navigate('/admin');
+                navigate('/professional');
             }
         } else {
             setErrorMessage(true);
@@ -28,7 +28,7 @@ export default function loginAdmin() {
     return (
         <div className={style.loginWrapper}>
             <form className={style.loginForm} onSubmit={onHandleLogin}>
-                <h2 className={style.loginTitle}>Login Admin</h2>
+                <h2 className={style.loginTitle}>Login Professional</h2>
                 <label className={style.loginLabel} htmlFor="email">
                     Email
                 </label>
@@ -53,6 +53,7 @@ export default function loginAdmin() {
                     Login
                 </button>
             </form>
+            <a className={style.link} href="/professional/register">Inscription</a>
             {errorMessage && (
                 <p className={style.errorMessage}>Invalid email or password</p>
             )}
