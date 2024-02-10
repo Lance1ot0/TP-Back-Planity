@@ -50,6 +50,13 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 			if id == 0 {
 				writer.WriteHeader(http.StatusUnauthorized)
 				writer.Write([]byte("Authentication failed"))
+				// err = json.NewEncoder(writer).Encode(struct {
+				// 	Status string `json:"status"`
+				// 	Error  string `json:"error"`
+				// }{
+				// 	Status: "error",
+				// 	Error:  "Authentication failed",
+				// })
 				return
 			}
 
@@ -57,7 +64,7 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 			return
 		}
 
-		token, err := middleware.GenerateJWT(id)
+		token, err := middleware.GenerateJWT(id, "admin")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

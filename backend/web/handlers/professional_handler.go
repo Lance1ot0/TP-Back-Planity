@@ -140,7 +140,7 @@ func (h *Handler) LoginProfessional() http.HandlerFunc {
 			return
 		}
 
-		token, err := middleware.GenerateJWT(professional.ProfessionalID)
+		token, err := middleware.GenerateJWT(professional.ProfessionalID, "professional")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

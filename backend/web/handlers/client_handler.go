@@ -127,7 +127,7 @@ func (h *Handler) LoginClient() http.HandlerFunc {
 			return
 		}
 
-		token, err := middleware.GenerateJWT(client.ClientID)
+		token, err := middleware.GenerateJWT(client.ClientID, "client")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
