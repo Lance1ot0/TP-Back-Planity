@@ -33,6 +33,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.Post("/login", handler.LoginClient())
 			r.Post("/reservation", handler.AddReservation())
 			r.Get("/{clientId}/reservations", handler.ListReservations())
+			r.Put("/reservation/{reservationId}", handler.CancelReservation())
 		})
 
 		r.Route("/admin", func(r chi.Router) {

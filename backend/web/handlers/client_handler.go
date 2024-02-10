@@ -199,3 +199,28 @@ func (h *Handler) ListReservations() http.HandlerFunc {
 		})
 	}
 }
+
+func (h *Handler) CancelReservation() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+
+		writer.Header().Set("Content-Type", "application/json")
+		QueryId := chi.URLParam(request, "reservationId")
+
+		reservationId, _ := strconv.Atoi(QueryId)
+
+		reservationUpdated, err := h.Store.Client.CancelReservation(reservationId)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(struct {
+			Status      string `json:"status"`
+			Reservation bool   `json:"data"`
+		}{
+			Status:      "success",
+			Reservation: reservationUpdated,
+		})
+	}
+}

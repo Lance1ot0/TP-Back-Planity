@@ -13,4 +13,5 @@ type ClientStoreInterface interface {
 	GetPasswordHash(id int) (string, error)
 	AddReservation(reservation models.Reservation) (models.Reservation, error)
 	ListReservations(clientId int) ([]models.Reservation, error)
+	CancelReservation(clientId int) (bool, error)
 }

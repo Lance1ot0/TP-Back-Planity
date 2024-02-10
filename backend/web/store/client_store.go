@@ -206,3 +206,23 @@ func (cs *ClientStore) ListReservations(clientId int) ([]models.Reservation, err
 
 	return reservations, nil
 }
+
+func (cs *ClientStore) CancelReservation(reservationId int) (bool, error) {
+
+	result, err := cs.Exec("UPDATE reservation SET status = 'canceled' WHERE reservationID = ?", reservationId)
+
+	if err != nil {
+		return false, err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+
+	if rowsAffected == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}
