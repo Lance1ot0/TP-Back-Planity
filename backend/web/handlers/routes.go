@@ -57,6 +57,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.With(mdw.Authorization).Get("/employee/{id}", handler.GetAllEmployee())
 			r.With(mdw.Authorization).Get("/employee/availability/{id}", handler.GetEmployeeAvailability())
 			r.With(mdw.Authorization).Get("/service/{id}", handler.GetHairSalonService())
+			r.With(mdw.Authorization).Get("/reservation/{id}", handler.GetHairSalonReservation())
 
 			r.Post("/register", handler.AddProfessional())
 			r.Post("/login", handler.LoginProfessional())

@@ -41,3 +41,32 @@
     background-color: #adb5bd;
     color: black;
 }
+
+.main {
+  margin-top: 40px;
+}
+
+.main table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.main table th {
+  background: rgba(222, 226, 230, 0.1);;
+  color: white;
+  padding: 8px;
+  text-align: left;
+}
+
+.main table td {
+  padding: 8px;
+}
+
+.main table td span {
+  text-transform: uppercase;
+}
+
+.main table tr {
+  border-bottom: 1px solid #f2f2f2;
+}

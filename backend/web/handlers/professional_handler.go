@@ -268,3 +268,19 @@ func (h *Handler) GetHairSalonService() http.HandlerFunc {
 		}
 	}
 }
+
+func (h *Handler) GetHairSalonReservation() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+
+		reservation, _ := h.Store.Professional.GetHairSalonReservation(id)
+		err := json.NewEncoder(writer).Encode(reservation)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}

@@ -258,3 +258,111 @@ func (ps *ProfessionalStore) GetHairSalonService(id int) ([]models.Service, erro
 
 	return services, nil
 }
+
+func (ps *ProfessionalStore) getEmployeeName(id int) (string, string, error) {
+	var firstname, lastname string
+
+	rows, err := ps.Query("SELECT firstname, lastname FROM employee WHERE employeeID = ?", id)
+	if err != nil {
+		return "", "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&firstname, &lastname); err != nil {
+			return "", "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", "", err
+	}
+
+	return firstname, lastname, nil
+}
+
+func (ps *ProfessionalStore) getServiceName(id int) (string, error) {
+	var name string
+
+	rows, err := ps.Query("SELECT name FROM service WHERE serviceID = ?", id)
+	if err != nil {
+		return "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&name); err != nil {
+			return "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", err
+	}
+
+	return name, nil
+}
+
+func (ps *ProfessionalStore) getClientName(id int) (string, string, error) {
+	var firstname, lastname string
+
+	rows, err := ps.Query("SELECT firstname, lastname FROM client WHERE clientID = ?", id)
+	if err != nil {
+		return "", "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&firstname, &lastname); err != nil {
+			return "", "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", "", err
+	}
+
+	return firstname, lastname, nil
+}
+
+func (ps *ProfessionalStore) GetHairSalonReservation(id int) ([]models.ReservationWithNames, error) {
+	fmt.Println("id", id)
+	var reservations []models.ReservationWithNames
+
+	rows, err := ps.Query("SELECT "+
+		"r.ReservationID, r.EmployeeID, r.ClientID, r.ServiceID, r.HairSalonID, r.date, r.status, "+
+		"e.firstname, e.lastname, "+
+		"c.firstname, c.lastname, "+
+		"s.name "+
+		"FROM reservation r "+
+		"JOIN employee e ON r.EmployeeID = e.employeeID "+
+		"JOIN client c ON r.ClientID = c.clientID "+
+		"JOIN service s ON r.ServiceID = s.serviceID WHERE r.hairSalonID = ?", id)
+	if err != nil {
+		return []models.ReservationWithNames{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var reservation models.ReservationWithNames
+		if err = rows.Scan(&reservation.ReservationID, &reservation.EmployeeID,
+			&reservation.ClientID, &reservation.ServiceID, &reservation.HairSalonID,
+			&reservation.ReservationDate, &reservation.ReservationStatus,
+			&reservation.EmployeeFirstname, &reservation.EmployeeLastname,
+			&reservation.ClientFirstname, &reservation.ClientLastname,
+			&reservation.ServiceName); err != nil {
+			return []models.ReservationWithNames{}, err
+		}
+		reservations = append(reservations, reservation)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.ReservationWithNames{}, err
+	}
+
+	return reservations, nil
+}
