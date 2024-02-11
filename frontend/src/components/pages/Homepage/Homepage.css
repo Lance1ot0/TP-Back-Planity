@@ -1,0 +1,56 @@
+.search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 64px 0px;
+  flex-direction: column;
+}
+
+.search form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  width: 100%;
+}
+
+.search form input {
+  padding: 12px 24px;
+  border-radius: 6px;
+  border: none;
+  box-shadow: none;
+}
+
+.search form button {
+  text-decoration: none;
+  color: white;
+  padding: 12px 24px;
+  background-color: #646cffaa;
+  border-radius: 6px;
+  border: none;
+  box-shadow: none;
+}
+
+.search-result-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 24px;
+  padding: 64px 0px;
+}
+
+.search-result-container .salon-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 64px 0px;
+  background-color: white;
+  color: black;
+  text-decoration: none;
+  width: 400px;
+  padding: 24px 24px;
+  border-radius: 6px;
+}

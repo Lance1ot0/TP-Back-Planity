@@ -92,10 +92,10 @@ func (cs *ClientStore) ResearchHairSalon(name string) ([]models.HairSalon, error
 	return salons, nil
 }
 
-func (ps *ClientStore) GetClientByEmail(email string) (models.Client, error) {
+func (cs *ClientStore) GetClientByEmail(email string) (models.Client, error) {
 	var client models.Client
 
-	rows, err := ps.Query("SELECT clientID, firstname, lastname, email FROM client WHERE email = ?", email)
+	rows, err := cs.Query("SELECT clientID, firstname, lastname, email FROM client WHERE email = ?", email)
 	if err != nil {
 		return models.Client{}, err
 	}
