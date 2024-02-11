@@ -177,6 +177,7 @@ func (h *Handler) AddReservation() http.HandlerFunc {
 	}
 }
 
+
 func (h Handler) ResearchHairSalon() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var name string
@@ -265,6 +266,8 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 
 		hairSalonId, _ := strconv.Atoi(QueryId)
 
+		hairSalon, err := h.Store.Client.GetHairSalonById(hairSalonId)
+		fmt.Println(hairSalon)
 		employees, err := h.Store.Client.GetEmployeesWithAvailabilities(hairSalonId)
 
 		if err != nil {
@@ -274,9 +277,11 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 
 		err = json.NewEncoder(writer).Encode(struct {
 			Status    string            `json:"status"`
-			Employees []models.Employee `json:"data"`
+			HairSalon models.HairSalon  `json:"salon"`
+			Employees []models.Employee `json:"employees"`
 		}{
 			Status:    "success",
+			HairSalon: hairSalon,
 			Employees: employees,
 		})
 	}

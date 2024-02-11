@@ -15,4 +15,5 @@ type ClientStoreInterface interface {
 	ListReservations(clientId int) ([]models.Reservation, error)
 	CancelReservation(clientId int) (bool, error)
 	GetEmployeesWithAvailabilities(hairSalonId int) ([]models.Employee, error)
+	GetHairSalonById(id int) (models.HairSalon, error)
 }

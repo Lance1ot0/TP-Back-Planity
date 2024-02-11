@@ -281,3 +281,27 @@ func (cs *ClientStore) GetEmployeesWithAvailabilities(hairSalonId int) ([]models
 
 	return employees, nil
 }
+
+
+func (cs *ClientStore) GetHairSalonById(id int) (models.HairSalon, error) {
+	var hairSalon models.HairSalon
+
+	rows, err := cs.Query("SELECT hairSalonID, name, address, city, postal_code, professionalID FROM hairSalon WHERE hairSalonID = ?", id)
+	if err != nil {
+		return models.HairSalon{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&hairSalon.HairSalonID, &hairSalon.Name, &hairSalon.Address, &hairSalon.City, &hairSalon.PostalCode, &hairSalon.ProfessionalID); err != nil {
+			return models.HairSalon{}, err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return models.HairSalon{}, err
+	}
+
+	return hairSalon, nil
+}

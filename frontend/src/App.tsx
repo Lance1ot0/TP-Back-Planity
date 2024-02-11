@@ -14,6 +14,7 @@ import ErrorPage from "./components/pages/errorPage/ErrorPage";
 import Navbar from "./components/Navbar/Navbar";
 import LoginSelection from "./components/pages/Login/LoginSelection";
 import RegisterSelection from "./components/pages/Register/RegisterSelection";
+import Salon from "./components/pages/Salon/Salon";
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
           path="/professional/register"
           element={<RegisterProfessional />}
         />
+
+        <Route path="/client/hairSalon/:id" element={<Salon />} />
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
