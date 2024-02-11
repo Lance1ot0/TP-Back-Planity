@@ -1,0 +1,53 @@
+.salon-infos-resa-container {
+  display: flex;
+  width: 100%;
+  margin-top: 24px;
+  justify-content: center;
+}
+
+.salon-infos-resa-wrapper {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  color: black;
+  padding: 24px;
+}
+
+.salon-infos-resa-wrapper h3 {
+  margin-bottom: 24px;
+}
+
+.salon-infos-resa-wrapper .salon-infos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-bottom: solid 1px black;
+}
+
+.salon-infos-resa-wrapper .salon-infos div {
+  padding: 12px;
+}
+
+.salon-infos-resa-wrapper .salon-resas {
+  display: flex;
+}
+
+.salon-infos-resa-wrapper .wrapper {
+  padding: 12px;
+}
+
+.salon-infos-resa-wrapper .wrapper .card {
+  padding: 12px;
+}
+
+.salon-infos-resa-wrapper .wrapper .hours {
+  overflow: scroll;
+  height: 50px;
+}
+
+.salon-infos-resa-wrapper .wrapper tbody {
+  overflow: scroll;
+  height: 50px;
+}
