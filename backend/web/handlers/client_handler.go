@@ -275,11 +275,11 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 		}
 
 		err = json.NewEncoder(writer).Encode(struct {
-			Status       string               `json:"status"`
-			HairSalon    models.HairSalon     `json:"salon"`
-			Employees    []models.Employee    `json:"employees"`
-			Services     []models.Service     `json:"services"`
-			Reservations []models.Reservation `json:"reservations"`
+			Status       string                `json:"status"`
+			HairSalon    models.HairSalon      `json:"salon"`
+			Employees    []models.EmployeeInfo `json:"employees"`
+			Services     []models.Service      `json:"services"`
+			Reservations []models.Reservation  `json:"reservations"`
 		}{
 			Status:       "success",
 			HairSalon:    hairSalon,
