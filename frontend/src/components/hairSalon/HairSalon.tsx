@@ -12,7 +12,7 @@ interface HairSalonProps {
 
 export default function HairSalon(props: HairSalonProps) {
     const [isEmployeeOpen, setIsEmployeeOpen] = useState<any>(false);
-    console.log("isEmployeeOpen: ", isEmployeeOpen);
+
     return (
         <div className={style.container}>
             <div className={style.top}>

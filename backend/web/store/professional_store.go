@@ -172,3 +172,64 @@ func (ps *ProfessionalStore) GetPasswordHash(id int) (string, error) {
 
 	return password, nil
 }
+
+func (ps *ProfessionalStore) GetEmployeeAvailability(id int) ([]models.Availability, error) {
+	var availabilities []models.Availability
+
+	rows, err := ps.Query("SELECT * FROM availability WHERE employeeID = ?", id)
+	if err != nil {
+		return []models.Availability{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var availability models.Availability
+		if err = rows.Scan(&availability.AvailabilityID, &availability.EmployeeID, &availability.DayOfWeek, &availability.StartTime, &availability.EndTime, &availability.IntervalTime); err != nil {
+			return []models.Availability{}, err
+		}
+		availabilities = append(availabilities, availability)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Availability{}, err
+	}
+
+	return availabilities, nil
+}
+
+func (ps *ProfessionalStore) AddEmployeeAvailability(id int, availability models.Availability) (bool, error) {
+	var existingAvailability models.Availability
+	err := ps.QueryRow("SELECT * FROM availability WHERE employeeID = ? AND day_of_week = ?", id, availability.DayOfWeek).Scan(
+		&existingAvailability.AvailabilityID,
+		&existingAvailability.EmployeeID,
+		&existingAvailability.DayOfWeek,
+		&existingAvailability.StartTime,
+		&existingAvailability.EndTime,
+		&existingAvailability.IntervalTime,
+	)
+	if err != nil && err != sql.ErrNoRows {
+		return false, err
+	}
+
+	if err == sql.ErrNoRows {
+		_, err = ps.Exec(`
+			INSERT INTO availability (employeeID, day_of_week, start_time, end_time, interval_time)
+			VALUES (?, ?, ?, ?, ?)
+		`, id, availability.DayOfWeek, availability.StartTime, availability.EndTime, availability.IntervalTime)
+		if err != nil {
+			return false, err
+		}
+	} else {
+		_, err = ps.Exec(`
+			UPDATE availability
+			SET start_time = ?, end_time = ?
+			WHERE availabilityID = ?
+		`, availability.StartTime, availability.EndTime, existingAvailability.AvailabilityID)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	return true, nil
+}

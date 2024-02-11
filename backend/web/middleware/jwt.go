@@ -18,7 +18,7 @@ func GenerateJWT(id int, role string) (string, error) {
 	claims := token.Claims.(jwt.MapClaims)
 	claims["user_id"] = id
 	claims["user_role"] = role
-	claims["exp"] = time.Now().Add(time.Hour * 1).Unix()
+	claims["exp"] = time.Now().Add(time.Hour * 5).Unix()
 
 	secretKeyStr := "R73pY17oMjuVSuhi47okiB9BAzDkYFUb"
 	secretKey := []byte(secretKeyStr)

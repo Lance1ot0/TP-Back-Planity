@@ -14,7 +14,6 @@ import (
 
 func (h *Handler) GetProfessional() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
-		// Je vais sortir un JSON, je rajoute le header correspondant
 		writer.Header().Set("Content-Type", "application/json")
 
 		professionals, _ := h.Store.Professional.GetProfessional()
@@ -202,6 +201,54 @@ func (h *Handler) LoginProfessional() http.HandlerFunc {
 				http.Error(writer, err.Error(), http.StatusInternalServerError)
 				return
 			}
+		}
+	}
+}
+
+func (h *Handler) GetEmployeeAvailability() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+
+		employee, _ := h.Store.Professional.GetEmployeeAvailability(id)
+		err := json.NewEncoder(writer).Encode(employee)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) AddEmployeeAvailability() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+
+		item := models.Availability{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		_, err = h.Store.Professional.AddEmployeeAvailability(id, item)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(struct {
+			Status bool `json:"status"`
+		}{
+			Status: true,
+		})
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
 		}
 	}
 }

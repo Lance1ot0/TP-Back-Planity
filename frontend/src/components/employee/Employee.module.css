@@ -18,6 +18,15 @@
   border-radius: 4px;
 }
 
+.container form button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background: #f1356d;
+  color: white;
+  cursor: pointer;
+}
+
 .main {
     margin-top: 40px;
 }
@@ -26,6 +35,7 @@
   background: rgba(222, 226, 230, 0.1);
   width: 30%;
   border-collapse: collapse;
+  height: 100%;
 }
 
 .main table th {
@@ -45,4 +55,9 @@
   background: #f1356d;
   color: white;
   cursor: pointer;
+}
+
+.employeeContainer {
+  display: flex;
+  gap: 50px;
 }

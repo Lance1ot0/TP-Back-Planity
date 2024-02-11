@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS availability (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
     start_time TIME,
     end_time TIME,
+    interval_time INT,
     FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
 );
 
@@ -88,21 +89,3 @@ CREATE TABLE IF NOT EXISTS request (
 );
 
 INSERT INTO administrator (firstname, lastname, email, password) VALUES ('admin', 'admin', 'admin@planity.com', 'admin');
-INSERT INTO administrator (firstname, lastname, email, password) VALUES ('dylan', 'lgvn', 'dylan@planity.com', 'admin');
-INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES ('John', 'Doe', 'pro@planity.com', '0689766371', '1 Rue des Monstres, Paris, 75016', 'password');
-INSERT INTO professional (firstname, lastname, email, phone, address, password) VALUES ('dwgv', 'dgwd', 'proff@planity.com', '0689766371', '1 Rue des Monstres, Paris, 75016', 'password');
-INSERT INTO client (firstname, lastname, email, password) VALUES ('Jane', 'Doe', 'client@planity.com', 'password');
-
-
-
-INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (1, 'Salon coiffure 1', '1 Rue des Triple Monstres', 'Paris', '75017', '2024-02-05 14:30:00', 'pending');
-INSERT INTO hairSalon (name, address, city, postal_code, professionalID)
-VALUES ('Salon de coiffure XYZ', '123 Rue de la Beauté', 'Paris', '75001', 1);
-
-
-INSERT INTO service (name, description, price, duration, hairSalonID) 
-VALUES ('Coupe de cheveux', 'Une coupe de cheveux standard pour hommes ou femmes', 30.00, 30, 1);
-
-
-INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (2, 'Salon coiffure 2', '1 Rue des Double Monstres', 'Paris', '75012', '2024-02-05 14:30:00', 'pending');
-INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (2, 'Salon coiffure 3', '1 Rue des quadruple Monstres', 'Paris', '75015', '2024-02-05 14:30:00', 'pending');

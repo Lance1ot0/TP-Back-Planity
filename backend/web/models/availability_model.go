@@ -6,4 +6,5 @@ type Availability struct {
 	DayOfWeek      string `json:"dayOfWeek"`
 	StartTime      string `json:"startTime"`
 	EndTime        string `json:"endTime"`
+	IntervalTime   int    `json:"intervalTime"`
 }

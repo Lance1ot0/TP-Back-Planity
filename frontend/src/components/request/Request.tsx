@@ -22,7 +22,6 @@ export default function Request() {
         };
         
         const res = await sendRequest(request);
-        console.log("res: ", res);
 
         if (res.success) {
             fetchRequest();
@@ -32,7 +31,6 @@ export default function Request() {
     const fetchRequest = async () => {
         const response = await getRequest();
         if (response.success) {
-            console.log("response req: ", response);
             setRequest(response.res);
         }
     };

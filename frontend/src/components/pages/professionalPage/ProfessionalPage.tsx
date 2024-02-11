@@ -14,7 +14,6 @@ export default function ProfessionalPage() {
     const fetchHairSalon = async () => {
         const response = await getHairSalon();
         if (response.success) {
-            console.log("response hair: ", response.res);
             setHairSalon(response.res);
         } 
     };
