@@ -42,7 +42,7 @@ func generateRandomKey(length int) (string, error) {
 	return key, nil
 }
 
-func JWTMiddleware(next http.Handler) http.Handler {
+func Authorization(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		tokenHeader := r.Header.Get("Authorization")
 
@@ -61,7 +61,6 @@ func JWTMiddleware(next http.Handler) http.Handler {
 
 		tokenString := splitToken[1]
 		token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-			// Vérifie que le token a été signé avec la même clé secrète que celle utilisée pour le signer
 			return []byte("R73pY17oMjuVSuhi47okiB9BAzDkYFUb"), nil
 		})
 		if err != nil {
@@ -76,25 +75,20 @@ func JWTMiddleware(next http.Handler) http.Handler {
 			return
 		}
 
-		// Ajoute les informations du token à la requête pour qu'elles soient accessibles dans les handlers suivants
 		context := context.WithValue(r.Context(), "user", token.Claims)
 		next.ServeHTTP(w, r.WithContext(context))
 	})
 }
 
-// decodeJWT decodes a JWT token and returns the user id and role
-func decodeJWT(tokenString string) (int, string, error) {
+func DecodeJWT(tokenString string) (jwt.MapClaims, error) {
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Vérifie que le token a été signé avec la même clé secrète que celle utilisée pour le signer
 		return []byte("R73pY17oMjuVSuhi47okiB9BAzDkYFUb"), nil
 	})
 	if err != nil {
-		return 0, "", err
+		return nil, err
 	}
 
 	claims := token.Claims.(jwt.MapClaims)
-	userID := int(claims["user_id"].(float64))
-	userRole := claims["user_role"].(string)
-
-	return userID, userRole, nil
+	return claims, nil
 }

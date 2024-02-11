@@ -62,7 +62,7 @@ func (cs *ClientStore) GetClientById(id int) (models.Client, error) {
 	return client, nil
 }
 
-func (cs *ClientStore) GetHairSalon(name string) ([]models.HairSalon, error) {
+func (cs *ClientStore) ResearchHairSalon(name string) ([]models.HairSalon, error) {
 
 	var salons []models.HairSalon
 

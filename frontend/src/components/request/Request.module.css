@@ -1,0 +1,54 @@
+.container {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container label {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.container input {
+  font-size: 24px;
+  margin: 8px 0;
+  width: 300px;
+  border-radius: 4px;
+}
+
+.container button {
+  font-size: 24px;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 4px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  width: 300px;
+  border: none;
+}
+
+.container h2 {
+  font-size: 30px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.container p {
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.container span {
+  font-size: 22px;
+  font-weight: bold;
+  text-decoration: underline;
+  
+}

@@ -1,6 +1,8 @@
 import { Route, Routes} from 'react-router-dom';
 import style from './App.module.css';
 
+import Homepage from './components/pages/Homepage/Homepage';
+
 import AdminPage from './components/pages/adminPage/AdminPage';
 import LoginAdmin from './components/login/loginAdmin/LoginAdmin';
 
@@ -14,7 +16,7 @@ function App() {
   return (
     <div className={style.appWrapper}>
       <Routes>
-        <Route path="/" element={<ErrorPage />} />
+        <Route path="/" element={<Homepage />} />
 
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/admin/login" element={<LoginAdmin />} />

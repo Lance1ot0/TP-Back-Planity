@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './ProfessionalPage.module.css';
+import { getHairSalon } from '../../../api/request/requestApi';
+import Request from '../../request/Request';
+import HairSalon from '../../hairSalon/HairSalon';
 
 export default function ProfessionalPage() {
     const navigate = useNavigate();
     const [role, setRole] = useState<string | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [hairSalon, setHairSalon] = useState<any>(null);
+
+    const fetchHairSalon = async () => {
+        const response = await getHairSalon();
+        if (response.success) {
+            console.log("response hair: ", response.res);
+            setHairSalon(response.res);
+        } 
+    };
 
     const logout = () => {
         localStorage.removeItem('role');
@@ -16,11 +28,12 @@ export default function ProfessionalPage() {
     };
 
     useEffect(() => {
-        const role = localStorage.getItem('role');
+        const storedRole = localStorage.getItem('role');
         const storedToken = localStorage.getItem('token');
-        if (role && storedToken) {
-            setRole(role);
+        if (storedRole && storedToken) {
+            setRole(storedRole);
             setToken(storedToken);
+            fetchHairSalon();
         } else {
             navigate('/professional/login'); 
         }
@@ -39,6 +52,19 @@ export default function ProfessionalPage() {
                     className={style.logoutButton}
                     onClick={() => { logout(); }}
                 >Déconnexion</button>
+            </div>
+            <div className={style.main}>
+                <div className={style.hairSalon}>
+                    {!hairSalon ? (
+                        <div>
+                            <Request/>
+                        </div>
+                    ) : (
+                        <div>
+                            <HairSalon {...hairSalon}/>
+                        </div>
+                    )}  
+                </div>
             </div>
         </div>
     );

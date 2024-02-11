@@ -26,5 +26,53 @@
     cursor: pointer;
     transition: 0.3s;
 }
+
+.main {
+    /* background: blue; */
+    width: 65%;
+}
+
+.requestContainer {
+    /* background: blue; */
+    margin-top: 40px;
+}
+
+.requestContainer h2 {
+    margin-bottom: 40px;
+    font-size: 30px;
+}
   
-  
+.requestForm {
+    /* background: green; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.requestForm label {
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.requestForm input {
+    height: 40px;
+    width: 50%;
+    font-size: 20px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #000000;
+}
+
+.requestForm button {
+    border: none;
+    border-radius: 4px;
+    height: 40px;
+    width: 50%;
+    font-size: 16px;
+    font-style: normal;
+    background-color: #457b9d;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 30px;
+}

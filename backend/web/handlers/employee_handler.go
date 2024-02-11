@@ -3,8 +3,11 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"TP-Back-Planity/web/models"
+
+	"github.com/go-chi/chi"
 )
 
 func (h *Handler) AddEmploye() http.HandlerFunc {
@@ -31,6 +34,27 @@ func (h *Handler) AddEmploye() http.HandlerFunc {
 			Status:     "success",
 			EmployeeID: id,
 		})
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) GetAllEmployee() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+
+		employees, err := h.Store.Employee.GetAllEmployee(id)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(employees)
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return

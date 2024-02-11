@@ -1,0 +1,48 @@
+.container {
+ /* background: red; */
+}
+
+.container form {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.container form label {
+  font-size: 20px;
+}
+
+.container form input {
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.main {
+    margin-top: 40px;
+}
+
+.main table {
+  background: rgba(222, 226, 230, 0.1);
+  width: 30%;
+  border-collapse: collapse;
+}
+
+.main table th {
+  padding: 10px;
+  text-align: left;
+}
+
+.main table td {
+  padding: 10px;
+  text-align: left;
+}
+
+.main table td button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  background: #f1356d;
+  color: white;
+  cursor: pointer;
+}

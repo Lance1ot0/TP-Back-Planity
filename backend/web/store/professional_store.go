@@ -85,6 +85,52 @@ func (ps *ProfessionalStore) GetProfessionalByEmail(email string) (models.Profes
 	return professional, nil
 }
 
+func (ps *ProfessionalStore) GetHairSalon(id int) (models.HairSalon, error) {
+	var hairSalon models.HairSalon
+
+	rows, err := ps.Query("SELECT hairSalonID, name, address, city, postal_code, professionalID FROM hairSalon WHERE professionalID = ?", id)
+	if err != nil {
+		return models.HairSalon{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&hairSalon.HairSalonID, &hairSalon.Name, &hairSalon.Address, &hairSalon.City, &hairSalon.PostalCode, &hairSalon.ProfessionalID); err != nil {
+			return models.HairSalon{}, err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return models.HairSalon{}, err
+	}
+
+	return hairSalon, nil
+}
+
+func (ps *ProfessionalStore) GetRequest(id int) (models.Request, error) {
+	var request models.Request
+
+	rows, err := ps.Query("SELECT requestID, professionalID, salon_name, address, city, postal_code, request_date, request_status FROM request WHERE professionalID = ?", id)
+	if err != nil {
+		return models.Request{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&request.RequestID, &request.ProfessionalID, &request.SalonName, &request.Address, &request.City, &request.PostalCode, &request.RequestDate, &request.RequestStatus); err != nil {
+			return models.Request{}, err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return models.Request{}, err
+	}
+
+	return request, nil
+}
+
 func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (bool, error) {
 	if professional.Firstname == "" || professional.Lastname == "" || professional.Email == "" ||
 		professional.Phone == "" || professional.Address == "" || professional.Password == "" {
@@ -100,11 +146,6 @@ func (ps *ProfessionalStore) AddProfessional(professional models.Professional) (
 	if err != nil {
 		return false, err
 	}
-
-	// id, err := res.LastInsertId()
-	// if err != nil {
-	// 	return false, err
-	// }
 
 	return true, nil
 }

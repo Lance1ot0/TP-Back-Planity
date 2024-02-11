@@ -57,6 +57,61 @@ func (h *Handler) GetProfessionalByEmail() http.HandlerFunc {
 	}
 }
 
+func (h *Handler) GetHairSalon() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		token := request.Header.Get("Authorization")
+		claims, err := middleware.DecodeJWT(token)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id := int(claims["user_id"].(float64))
+
+		hairSalon, _ := h.Store.Professional.GetHairSalon(id)
+		if hairSalon.HairSalonID == 0 {
+			http.Error(writer, "No hair salon found", http.StatusNotFound)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(hairSalon)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func (h *Handler) GetRequest() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		token := request.Header.Get("Authorization")
+		claims, err := middleware.DecodeJWT(token)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id := int(claims["user_id"].(float64))
+
+		requests, _ := h.Store.Professional.GetRequest(id)
+		if requests.RequestID == 0 {
+			http.Error(writer, "No request found", http.StatusNotFound)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(requests)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+}
+
 func (h *Handler) AddProfessional() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		writer.Header().Set("Content-Type", "application/json")

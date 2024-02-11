@@ -176,3 +176,34 @@ func (h *Handler) AddReservation() http.HandlerFunc {
 		})
 	}
 }
+
+func (h Handler) ResearchHairSalon() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		var name string
+
+		item := models.HairSalon{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		name = item.Name
+		fmt.Println(name)
+		writer.Header().Set("Content-Type", "application/json")
+
+		hairSalon, err := h.Store.Client.ResearchHairSalon(name)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = json.NewEncoder(writer).Encode(hairSalon)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
