@@ -189,7 +189,6 @@ func (h Handler) ResearchHairSalon() http.HandlerFunc {
 		}
 
 		name = item.Name
-		fmt.Println(name)
 		writer.Header().Set("Content-Type", "application/json")
 
 		hairSalon, err := h.Store.Client.ResearchHairSalon(name)
@@ -253,6 +252,31 @@ func (h *Handler) CancelReservation() http.HandlerFunc {
 		}{
 			Status:      "success",
 			Reservation: reservationUpdated,
+		})
+	}
+}
+
+func (h *Handler) GetSalonInfo() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+
+		writer.Header().Set("Content-Type", "application/json")
+		QueryId := chi.URLParam(request, "hairSalonId")
+
+		hairSalonId, _ := strconv.Atoi(QueryId)
+
+		employees, err := h.Store.Client.GetEmployeesWithAvailabilities(hairSalonId)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		err = json.NewEncoder(writer).Encode(struct {
+			Status    string            `json:"status"`
+			Employees []models.Employee `json:"data"`
+		}{
+			Status:    "success",
+			Employees: employees,
 		})
 	}
 }

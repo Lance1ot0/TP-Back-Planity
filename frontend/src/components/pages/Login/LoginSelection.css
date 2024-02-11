@@ -1,0 +1,26 @@
+.login-selection-container h1 {
+  width: 100%;
+  text-align: center;
+  margin: 48px 0px;
+  font-size: 2em;
+}
+
+.account-selection-type-container {
+  display: flex;
+  justify-content: space-between;
+  min-width: 320px;
+  margin: 0px 120px;
+}
+
+.account-selection-type-container .link {
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+  background-color: #f1356d;
+  text-decoration: none;
+  font-size: 1.5em;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

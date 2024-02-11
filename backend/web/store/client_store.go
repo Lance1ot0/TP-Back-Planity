@@ -92,10 +92,10 @@ func (cs *ClientStore) ResearchHairSalon(name string) ([]models.HairSalon, error
 	return salons, nil
 }
 
-func (ps *ClientStore) GetClientByEmail(email string) (models.Client, error) {
+func (cs *ClientStore) GetClientByEmail(email string) (models.Client, error) {
 	var client models.Client
 
-	rows, err := ps.Query("SELECT clientID, firstname, lastname, email FROM client WHERE email = ?", email)
+	rows, err := cs.Query("SELECT clientID, firstname, lastname, email FROM client WHERE email = ?", email)
 	if err != nil {
 		return models.Client{}, err
 	}
@@ -225,4 +225,59 @@ func (cs *ClientStore) CancelReservation(reservationId int) (bool, error) {
 	}
 
 	return true, nil
+}
+func (cs *ClientStore) GetEmployeesWithAvailabilities(hairSalonId int) ([]models.Employee, error) {
+	var employeesMap = make(map[int]*models.Employee)
+
+	rows, err := cs.Query(`
+        SELECT e.employeeID, e.firstname, e.lastname, e.hairSalonID,
+               a.availabilityID, a.day_of_week, a.start_time, a.end_time
+        FROM employee e
+        LEFT JOIN availability a ON e.employeeID = a.employeeID
+        WHERE e.hairSalonID = ?
+    `, hairSalonId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var employeeID int
+		var firstname, lastname string
+		var hairSalonID int
+		var availabilityID int
+		var dayOfWeek, startTime, endTime string
+
+		err := rows.Scan(&employeeID, &firstname, &lastname, &hairSalonID, &availabilityID, &dayOfWeek, &startTime, &endTime)
+		if err != nil {
+			return nil, err
+		}
+
+		if _, ok := employeesMap[employeeID]; !ok {
+			employeesMap[employeeID] = &models.Employee{
+				EmployeeID:     employeeID,
+				Firstname:      firstname,
+				Lastname:       lastname,
+				HairSalonID:    hairSalonID,
+				Availabilities: make([]models.Availability, 0),
+			}
+		}
+
+		if availabilityID != 0 {
+			employeesMap[employeeID].Availabilities = append(employeesMap[employeeID].Availabilities, models.Availability{
+				AvailabilityID: availabilityID,
+				EmployeeID:     employeeID,
+				DayOfWeek:      dayOfWeek,
+				StartTime:      startTime,
+				EndTime:        endTime,
+			})
+		}
+	}
+
+	var employees []models.Employee
+	for _, employee := range employeesMap {
+		employees = append(employees, *employee)
+	}
+
+	return employees, nil
 }
