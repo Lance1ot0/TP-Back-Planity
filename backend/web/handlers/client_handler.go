@@ -190,7 +190,6 @@ func (h Handler) ResearchHairSalon() http.HandlerFunc {
 		}
 
 		name = item.Name
-		fmt.Println(name)
 		writer.Header().Set("Content-Type", "application/json")
 
 		hairSalon, err := h.Store.Client.ResearchHairSalon(name)

@@ -1,0 +1,19 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 120px;
+}
+
+.right-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  padding: 12px 24px;
+  background-color: #646cffaa;
+  border-radius: 6px;
+}

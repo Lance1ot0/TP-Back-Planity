@@ -32,7 +32,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 
 			r.Post("/register", handler.AddClient())
 			r.Post("/login", handler.LoginClient())
-			r.With(mdw.Authorization).Post("/hairSalon", handler.ResearchHairSalon())
+			r.Post("/hairsalon", handler.ResearchHairSalon())
 			r.With(mdw.Authorization).Post("/reservation", handler.AddReservation())
 			r.Post("/reservation", handler.AddReservation())
 			r.Get("/{clientId}/reservations", handler.ListReservations())
