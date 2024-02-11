@@ -74,7 +74,6 @@ export default function HairSalon(props: HairSalonProps) {
                 <div className={style.topLeft}>
                     <h2>{props.name}</h2>
                     <p>{props.address}, {props.postalCode} {props.city}</p>
-                    <p>id: {props.hairSalonID}</p>
                 </div>
                 <div className={style.topRight}>
                     <button onClick={handleRDVClick}>RDV</button>
