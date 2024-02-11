@@ -10,6 +10,10 @@ import ProfessionalPage from "./components/pages/professionalPage/ProfessionalPa
 import LoginProfessional from "./components/login/loginProfessional/LoginProfessional";
 import RegisterProfessional from "./components/pages/Register/RegisterProfessional";
 
+import ClientPage from "./components/pages/ClientPage/ClientPage";
+import LoginClient from "./components/login/LoginClient/LoginClient";
+import RegisterClient from "./components/pages/Register/RegisterClient";
+
 import ErrorPage from "./components/pages/errorPage/ErrorPage";
 import Navbar from "./components/Navbar/Navbar";
 import LoginSelection from "./components/pages/Login/LoginSelection";
@@ -33,6 +37,10 @@ function App() {
           path="/professional/register"
           element={<RegisterProfessional />}
         />
+
+        <Route path="/client" element={<ClientPage />} />
+        <Route path="/client/login" element={<LoginClient />} />
+        <Route path="/client/register" element={<RegisterClient/>} />
 
         <Route path="*" element={<ErrorPage />} />
       </Routes>
