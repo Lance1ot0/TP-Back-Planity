@@ -229,36 +229,32 @@ func (cs *ClientStore) CancelReservation(reservationId int) (bool, error) {
 func (cs *ClientStore) GetEmployeesWithAvailabilities(hairSalonId int) ([]models.EmployeeInfo, error) {
 	var employeesMap = make(map[int]*models.EmployeeInfo)
 
-	rows, err := cs.Query(`
+	availabilitiesQuery := `
         SELECT e.employeeID, e.firstname, e.lastname, e.hairSalonID,
-               a.availabilityID, a.day_of_week, a.start_time, a.end_time,
-               r.date, r.hairSalonID, r.serviceID, r.clientID, r.employeeID
+               a.availabilityID, a.day_of_week, a.start_time, a.end_time
         FROM employee e
         LEFT JOIN availability a ON e.employeeID = a.employeeID
-        LEFT JOIN reservation r ON r.employeeID = e.employeeID
         WHERE e.hairSalonID = ?
-    `, hairSalonId)
+    `
+	availabilitiesRows, err := cs.Query(availabilitiesQuery, hairSalonId)
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer availabilitiesRows.Close()
 
-	for rows.Next() {
+	for availabilitiesRows.Next() {
 		var employeeID int
 		var firstname, lastname string
 		var hairSalonID int
-		var availabilityID, reservationID sql.NullInt64
-		var dayOfWeek, startTime, endTime, reservationDateTime sql.NullString
-		var reservationHairSalonID, serviceID, clientID sql.NullInt64
+		var availabilityID int
+		var dayOfWeek, startTime, endTime string
 
-		err := rows.Scan(&employeeID, &firstname, &lastname, &hairSalonID,
-			&availabilityID, &dayOfWeek, &startTime, &endTime,
-			&reservationDateTime, &reservationID, &reservationHairSalonID, &serviceID, &clientID)
+		err := availabilitiesRows.Scan(&employeeID, &firstname, &lastname, &hairSalonID,
+			&availabilityID, &dayOfWeek, &startTime, &endTime)
 		if err != nil {
 			return nil, err
 		}
 
-		// Créer un nouvel employé s'il n'existe pas encore dans la carte
 		if _, ok := employeesMap[employeeID]; !ok {
 			employeesMap[employeeID] = &models.EmployeeInfo{
 				EmployeeID:           employeeID,
@@ -270,31 +266,38 @@ func (cs *ClientStore) GetEmployeesWithAvailabilities(hairSalonId int) ([]models
 			}
 		}
 
-		// Ajouter la disponibilité à l'employé correspondant
-		if availabilityID.Valid {
-			employeesMap[employeeID].Availabilities = append(employeesMap[employeeID].Availabilities, models.Availability{
-				AvailabilityID: int(availabilityID.Int64),
-				EmployeeID:     employeeID,
-				DayOfWeek:      dayOfWeek.String,
-				StartTime:      startTime.String,
-				EndTime:        endTime.String,
-			})
-		}
-
-		// Ajouter la réservation à l'employé correspondant
-		if reservationID.Valid {
-			employeesMap[employeeID].EmployeeReservations = append(employeesMap[employeeID].EmployeeReservations, models.Reservation{
-				ReservationID:   int(reservationID.Int64),
-				EmployeeID:      employeeID,
-				ReservationDate: reservationDateTime.String,
-				HairSalonID:     int(reservationHairSalonID.Int64),
-				ServiceID:       int(serviceID.Int64),
-				ClientID:        int(clientID.Int64),
-			})
-		}
+		employeesMap[employeeID].Availabilities = append(employeesMap[employeeID].Availabilities, models.Availability{
+			AvailabilityID: availabilityID,
+			EmployeeID:     employeeID,
+			DayOfWeek:      dayOfWeek,
+			StartTime:      startTime,
+			EndTime:        endTime,
+		})
 	}
 
-	// Convertir la carte d'employés en une liste
+	reservationsQuery := `
+        SELECT r.reservationID, r.employeeID, r.date, r.status, r.hairSalonID, r.serviceID, r.clientID
+        FROM reservation r
+        JOIN employee e ON r.employeeID = e.employeeID
+        WHERE e.hairSalonID = ?
+    `
+	reservationsRows, err := cs.Query(reservationsQuery, hairSalonId)
+	if err != nil {
+		return nil, err
+	}
+	defer reservationsRows.Close()
+
+	for reservationsRows.Next() {
+		var reservation models.Reservation
+		err := reservationsRows.Scan(&reservation.ReservationID, &reservation.EmployeeID, &reservation.ReservationDate,
+			&reservation.ReservationStatus, &reservation.HairSalonID, &reservation.ServiceID, &reservation.ClientID)
+		if err != nil {
+			return nil, err
+		}
+
+		employeesMap[reservation.EmployeeID].EmployeeReservations = append(employeesMap[reservation.EmployeeID].EmployeeReservations, reservation)
+	}
+
 	var employees []models.EmployeeInfo
 	for _, employee := range employeesMap {
 		employees = append(employees, *employee)
