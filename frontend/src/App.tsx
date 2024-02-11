@@ -1,6 +1,13 @@
 import "./App.css";
 import useSWR from "swr";
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar/Navbar";
+import LoginSelection from "./pages/Login/LoginSelection";
+import LoginPro from "./pages/Login/LoginPro";
+import LoginClient from "./pages/Login/LoginClient";
+import LoginAdmin from "./pages/Login/LoginAdmin";
 
 export const API_URL = "http://localhost:8081/api";
 
@@ -65,11 +72,27 @@ async function updateRequest(
 }
 
 function App() {
-  const { data, mutate } = useSWR("admin/requests", getAllRequests);
-  const [newSalonName, setNewSalonName] = useState("");
+  // const { data, mutate } = useSWR("admin/requests", getAllRequests);
+  // const [newSalonName, setNewSalonName] = useState("");
 
   return (
     <>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/admin/login" element={<LoginAdmin />} />
+        <Route path="/login" element={<LoginSelection />} />
+        <Route path="/login/pro" element={<LoginPro />} />
+        <Route path="/login/client" element={<LoginClient />} />
+      </Routes>
+    </>
+  );
+}
+
+export default App;
+
+{
+  /* <>
       <h1>TP PLANITY PROJECT</h1>
 
       {data && (
@@ -141,8 +164,5 @@ function App() {
       >
         Create Request
       </button>
-    </>
-  );
+    </> */
 }
-
-export default App;

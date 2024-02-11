@@ -1,0 +1,11 @@
+.account-selection-type-container {
+  display: flex;
+  justify-content: space-between;
+  min-width: 320px;
+}
+
+.account-selection-type-container .link {
+  padding: 12px 24px;
+  border-radius: 6px;
+  background-color: white;
+}
