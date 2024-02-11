@@ -1,0 +1,53 @@
+.container {
+}
+
+.container form {
+    margin-top: 20px;
+    margin-bottom: 40px;
+    display: flex;
+    gap: 10px;
+}
+
+.container form label {
+    font-size: 20px;
+}
+
+.container form input {
+    border-radius: 4px;
+}
+
+.container form button {
+    background: #f1356d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    width: 8%;
+    border-radius: 4px;
+}
+
+.container ul {
+    background: green;
+    list-style: none;
+}
+
+.container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.container table th {
+    background: rgba(222, 226, 230, 0.1);;
+    color: white;
+    padding: 8px;
+    text-align: left;
+}
+
+.container table td {
+    padding: 8px;
+}
+
+.container table tr {
+    border-bottom: 1px solid #f2f2f2;
+}
+

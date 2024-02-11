@@ -58,6 +58,7 @@ CREATE TABLE IF NOT EXISTS availability (
     day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
     start_time TIME,
     end_time TIME,
+    interval_time INT,
     FOREIGN KEY (employeeID) REFERENCES employee(employeeID)
 );
 

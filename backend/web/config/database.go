@@ -25,13 +25,11 @@ func ConnectToDB() (*sql.DB, error) {
 		AllowNativePasswords: true,
 	}
 
-	// FormatDSN prépare le DSN (Data Source Name) de la connexion à la base de données
 	db, err := sql.Open("mysql", conf.FormatDSN())
 	if err != nil {
 		return nil, fmt.Errorf("sql.Open: %v", err)
 	}
 
-	// Ping vérifie l'état de la connexion à la base de données
 	if err = db.Ping(); err != nil {
 		return nil, fmt.Errorf("db.Ping: %v", err)
 	}

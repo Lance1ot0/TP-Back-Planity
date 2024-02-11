@@ -173,6 +173,200 @@ func (ps *ProfessionalStore) GetPasswordHash(id int) (string, error) {
 	return password, nil
 }
 
+func (ps *ProfessionalStore) GetEmployeeAvailability(id int) ([]models.Availability, error) {
+	var availabilities []models.Availability
+
+	rows, err := ps.Query("SELECT * FROM availability WHERE employeeID = ?", id)
+	if err != nil {
+		return []models.Availability{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var availability models.Availability
+		if err = rows.Scan(&availability.AvailabilityID, &availability.EmployeeID, &availability.DayOfWeek, &availability.StartTime, &availability.EndTime, &availability.IntervalTime); err != nil {
+			return []models.Availability{}, err
+		}
+		availabilities = append(availabilities, availability)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Availability{}, err
+	}
+
+	return availabilities, nil
+}
+
+func (ps *ProfessionalStore) AddEmployeeAvailability(id int, availability models.Availability) (bool, error) {
+	var existingAvailability models.Availability
+	err := ps.QueryRow("SELECT * FROM availability WHERE employeeID = ? AND day_of_week = ?", id, availability.DayOfWeek).Scan(
+		&existingAvailability.AvailabilityID,
+		&existingAvailability.EmployeeID,
+		&existingAvailability.DayOfWeek,
+		&existingAvailability.StartTime,
+		&existingAvailability.EndTime,
+		&existingAvailability.IntervalTime,
+	)
+	if err != nil && err != sql.ErrNoRows {
+		return false, err
+	}
+
+	if err == sql.ErrNoRows {
+		_, err = ps.Exec(`
+			INSERT INTO availability (employeeID, day_of_week, start_time, end_time, interval_time)
+			VALUES (?, ?, ?, ?, ?)
+		`, id, availability.DayOfWeek, availability.StartTime, availability.EndTime, availability.IntervalTime)
+		if err != nil {
+			return false, err
+		}
+	} else {
+		_, err = ps.Exec(`
+			UPDATE availability
+			SET start_time = ?, end_time = ?
+			WHERE availabilityID = ?
+		`, availability.StartTime, availability.EndTime, existingAvailability.AvailabilityID)
+		if err != nil {
+			return false, err
+		}
+	}
+
+	return true, nil
+}
+
+func (ps *ProfessionalStore) GetHairSalonService(id int) ([]models.Service, error) {
+	var services []models.Service
+
+	rows, err := ps.Query("SELECT * FROM service WHERE hairSalonID = ?", id)
+	if err != nil {
+		return []models.Service{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var service models.Service
+		if err = rows.Scan(&service.ServiceID, &service.Name, &service.Description, &service.Price, &service.Duration, &service.HairSalonID); err != nil {
+			return []models.Service{}, err
+		}
+		services = append(services, service)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Service{}, err
+	}
+
+	return services, nil
+}
+
+func (ps *ProfessionalStore) getEmployeeName(id int) (string, string, error) {
+	var firstname, lastname string
+
+	rows, err := ps.Query("SELECT firstname, lastname FROM employee WHERE employeeID = ?", id)
+	if err != nil {
+		return "", "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&firstname, &lastname); err != nil {
+			return "", "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", "", err
+	}
+
+	return firstname, lastname, nil
+}
+
+func (ps *ProfessionalStore) getServiceName(id int) (string, error) {
+	var name string
+
+	rows, err := ps.Query("SELECT name FROM service WHERE serviceID = ?", id)
+	if err != nil {
+		return "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&name); err != nil {
+			return "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", err
+	}
+
+	return name, nil
+}
+
+func (ps *ProfessionalStore) getClientName(id int) (string, string, error) {
+	var firstname, lastname string
+
+	rows, err := ps.Query("SELECT firstname, lastname FROM client WHERE clientID = ?", id)
+	if err != nil {
+		return "", "", err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&firstname, &lastname); err != nil {
+			return "", "", err
+		}
+	}
+
+	if err = rows.Err(); err != nil {
+		return "", "", err
+	}
+
+	return firstname, lastname, nil
+}
+
+func (ps *ProfessionalStore) GetHairSalonReservation(id int) ([]models.ReservationWithNames, error) {
+	fmt.Println("id", id)
+	var reservations []models.ReservationWithNames
+
+	rows, err := ps.Query("SELECT "+
+		"r.ReservationID, r.EmployeeID, r.ClientID, r.ServiceID, r.HairSalonID, r.date, r.status, "+
+		"e.firstname, e.lastname, "+
+		"c.firstname, c.lastname, "+
+		"s.name "+
+		"FROM reservation r "+
+		"JOIN employee e ON r.EmployeeID = e.employeeID "+
+		"JOIN client c ON r.ClientID = c.clientID "+
+		"JOIN service s ON r.ServiceID = s.serviceID WHERE r.hairSalonID = ?", id)
+	if err != nil {
+		return []models.ReservationWithNames{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var reservation models.ReservationWithNames
+		if err = rows.Scan(&reservation.ReservationID, &reservation.EmployeeID,
+			&reservation.ClientID, &reservation.ServiceID, &reservation.HairSalonID,
+			&reservation.ReservationDate, &reservation.ReservationStatus,
+			&reservation.EmployeeFirstname, &reservation.EmployeeLastname,
+			&reservation.ClientFirstname, &reservation.ClientLastname,
+			&reservation.ServiceName); err != nil {
+			return []models.ReservationWithNames{}, err
+		}
+		reservations = append(reservations, reservation)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.ReservationWithNames{}, err
+	}
+
+	return reservations, nil
+}
+
 func (ps *ProfessionalStore) ListReservationsForPro(hairSalonId int) ([]models.Reservation, error) {
 
 	var reservations []models.Reservation

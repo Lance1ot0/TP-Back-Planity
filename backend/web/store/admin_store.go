@@ -121,9 +121,6 @@ func (as *AdminStore) ListRequests() ([]models.Request, error) {
 }
 
 func (as *AdminStore) UpdateRequest(id int, status string) (bool, error) {
-
-	// var request
-
 	result, err := as.Exec("UPDATE request SET request_status = ? WHERE RequestID = ?", status, id)
 
 	if err != nil {

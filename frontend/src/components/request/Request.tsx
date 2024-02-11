@@ -22,7 +22,6 @@ export default function Request() {
     };
 
     const res = await sendRequest(request);
-    console.log("res: ", res);
 
     if (res.success) {
       fetchRequest();

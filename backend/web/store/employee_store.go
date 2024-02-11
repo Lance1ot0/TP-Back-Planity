@@ -23,12 +23,6 @@ func (es *EmployeeStore) employeeExists(professionalID int) (bool, error) {
 }
 
 func (es *EmployeeStore) AddEmployee(employee models.Employee) (int, error) {
-	// if exists, err := es.employeeExists(employee.ProfessionalID); err != nil {
-	// 	return 0, err
-	// } else if exists {
-	// 	return 0, fmt.Errorf("employee already exists")
-	// }
-
 	result, err := es.Exec("INSERT INTO employee (firstname, lastname, hairSalonID) VALUES (?, ?, ?)",
 		employee.Firstname, employee.Lastname, employee.HairSalonID)
 	if err != nil {
