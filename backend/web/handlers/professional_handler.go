@@ -252,3 +252,19 @@ func (h *Handler) AddEmployeeAvailability() http.HandlerFunc {
 		}
 	}
 }
+
+func (h *Handler) GetHairSalonService() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		QueryId := chi.URLParam(request, "id")
+		id, _ := strconv.Atoi(QueryId)
+
+		service, _ := h.Store.Professional.GetHairSalonService(id)
+		err := json.NewEncoder(writer).Encode(service)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}

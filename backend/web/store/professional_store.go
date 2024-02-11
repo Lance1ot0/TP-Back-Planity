@@ -233,3 +233,28 @@ func (ps *ProfessionalStore) AddEmployeeAvailability(id int, availability models
 
 	return true, nil
 }
+
+func (ps *ProfessionalStore) GetHairSalonService(id int) ([]models.Service, error) {
+	var services []models.Service
+
+	rows, err := ps.Query("SELECT * FROM service WHERE hairSalonID = ?", id)
+	if err != nil {
+		return []models.Service{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var service models.Service
+		if err = rows.Scan(&service.ServiceID, &service.Name, &service.Description, &service.Price, &service.Duration, &service.HairSalonID); err != nil {
+			return []models.Service{}, err
+		}
+		services = append(services, service)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Service{}, err
+	}
+
+	return services, nil
+}

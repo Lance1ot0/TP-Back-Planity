@@ -14,4 +14,5 @@ type ProfessionalStoreInterface interface {
 	GetRequest(id int) (models.Request, error)
 	GetEmployeeAvailability(id int) ([]models.Availability, error)
 	AddEmployeeAvailability(id int, availability models.Availability) (bool, error)
+	GetHairSalonService(id int) ([]models.Service, error)
 }

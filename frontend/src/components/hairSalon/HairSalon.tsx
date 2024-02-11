@@ -1,3 +1,4 @@
+import Service from '../Service/Service';
 import Employee from '../employee/Employee';
 import style from './HairSalon.module.css';
 import { useState } from 'react';
@@ -11,7 +12,8 @@ interface HairSalonProps {
 }
 
 export default function HairSalon(props: HairSalonProps) {
-    const [isEmployeeOpen, setIsEmployeeOpen] = useState<any>(false);
+    const [isEmployeeOpen, setIsEmployeeOpen] = useState<boolean>(false);
+    const [isServiceOpen, setIsServiceOpen] = useState<boolean>(false);
 
     return (
         <div className={style.container}>
@@ -22,14 +24,18 @@ export default function HairSalon(props: HairSalonProps) {
                     <p>id: {props.hairSalonID}</p>
                 </div>
                 <div className={style.topRight}>
-                    <button onClick={() => setIsEmployeeOpen(!isEmployeeOpen)}>Employe</button>
-                    <button>Service</button>
+                    <button onClick={() => {setIsEmployeeOpen(!isEmployeeOpen); setIsServiceOpen(false)}}>Employe</button>
+                    <button onClick={() => {setIsServiceOpen(!isServiceOpen); setIsEmployeeOpen(false)}}>Service</button>
                 </div>
             </div>
 
             <div className={style.main}>
                 {isEmployeeOpen && (
                     <Employee hairSalonID={props.hairSalonID} />
+                )}
+
+                {isServiceOpen && (
+                    <Service hairSalonID={props.hairSalonID} />
                 )}
             </div>
         </div>
