@@ -8,7 +8,7 @@ import LoginAdmin from "./components/login/loginAdmin/LoginAdmin";
 
 import ProfessionalPage from "./components/pages/professionalPage/ProfessionalPage";
 import LoginProfessional from "./components/login/loginProfessional/LoginProfessional";
-import RegisterProfessional from "./components/register/registerProfessional/RegisterProfessional";
+import RegisterProfessional from "./components/pages/Register/RegisterProfessional";
 
 import ErrorPage from "./components/pages/errorPage/ErrorPage";
 import Navbar from "./components/Navbar/Navbar";
