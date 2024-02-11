@@ -177,7 +177,6 @@ func (h *Handler) AddReservation() http.HandlerFunc {
 	}
 }
 
-
 func (h Handler) ResearchHairSalon() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		var name string
@@ -267,8 +266,9 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 		hairSalonId, _ := strconv.Atoi(QueryId)
 
 		hairSalon, err := h.Store.Client.GetHairSalonById(hairSalonId)
-		fmt.Println(hairSalon)
 		employees, err := h.Store.Client.GetEmployeesWithAvailabilities(hairSalonId)
+		services, err := h.Store.Service.ListServices(hairSalonId)
+		reservations, err := h.Store.Professional.ListReservationsForPro(hairSalonId)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusBadRequest)
@@ -276,13 +276,17 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 		}
 
 		err = json.NewEncoder(writer).Encode(struct {
-			Status    string            `json:"status"`
-			HairSalon models.HairSalon  `json:"salon"`
-			Employees []models.Employee `json:"employees"`
+			Status       string               `json:"status"`
+			HairSalon    models.HairSalon     `json:"salon"`
+			Employees    []models.Employee    `json:"employees"`
+			Services     []models.Service     `json:"services"`
+			Reservations []models.Reservation `json:"reservations"`
 		}{
-			Status:    "success",
-			HairSalon: hairSalon,
-			Employees: employees,
+			Status:       "success",
+			HairSalon:    hairSalon,
+			Employees:    employees,
+			Services:     services,
+			Reservations: reservations,
 		})
 	}
 }

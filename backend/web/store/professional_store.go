@@ -172,3 +172,30 @@ func (ps *ProfessionalStore) GetPasswordHash(id int) (string, error) {
 
 	return password, nil
 }
+
+func (ps *ProfessionalStore) ListReservationsForPro(hairSalonId int) ([]models.Reservation, error) {
+
+	var reservations []models.Reservation
+	var reservation models.Reservation
+
+	rows, err := ps.Query("SELECT * FROM reservation WHERE hairSalonID = ? AND status = ?", hairSalonId, "confirmed")
+	if err != nil {
+		return []models.Reservation{}, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		if err = rows.Scan(&reservation.ReservationID, &reservation.EmployeeID, &reservation.HairSalonID, &reservation.ClientID, &reservation.ServiceID, &reservation.ReservationDate, &reservation.ReservationStatus); err != nil {
+			return []models.Reservation{}, err
+		}
+
+		reservations = append(reservations, reservation)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Reservation{}, err
+	}
+
+	return reservations, nil
+}

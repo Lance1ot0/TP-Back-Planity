@@ -12,4 +12,5 @@ type ProfessionalStoreInterface interface {
 	GetPasswordHash(id int) (string, error)
 	GetHairSalon(id int) (models.HairSalon, error)
 	GetRequest(id int) (models.Request, error)
+	ListReservationsForPro(hairSalonId int) ([]models.Reservation, error)
 }

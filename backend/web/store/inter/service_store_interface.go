@@ -6,4 +6,5 @@ import (
 
 type ServiceStoreInterface interface {
 	AddService(item models.Service) (int, error)
+	ListServices(hairSalonId int) ([]models.Service, error)
 }

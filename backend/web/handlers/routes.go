@@ -62,6 +62,7 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.With(mdw.Authorization).Post("/employee", handler.AddEmploye())
 			r.With(mdw.Authorization).Post("/service", handler.AddService())
 			r.With(mdw.Authorization).Post("/request", handler.RequestAddEstablishment())
+			r.Get("/hairSalon/{hairSalonId}", handler.GetSalonInfo())
 		})
 	})
 

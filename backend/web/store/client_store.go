@@ -282,7 +282,6 @@ func (cs *ClientStore) GetEmployeesWithAvailabilities(hairSalonId int) ([]models
 	return employees, nil
 }
 
-
 func (cs *ClientStore) GetHairSalonById(id int) (models.HairSalon, error) {
 	var hairSalon models.HairSalon
 
