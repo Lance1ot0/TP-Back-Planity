@@ -97,7 +97,7 @@ func (as *AdminStore) LoginAdmin(email string, password string) (int, error) {
 
 func (as *AdminStore) ListRequests() ([]models.Request, error) {
 	var requests []models.Request
-	rows, err := as.Query("SELECT * FROM request WHERE request_status = 'pending'")
+	rows, err := as.Query("SELECT * FROM request")
 
 	if err != nil {
 		return nil, err

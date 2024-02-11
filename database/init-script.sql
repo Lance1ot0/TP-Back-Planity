@@ -38,9 +38,7 @@ CREATE TABLE IF NOT EXISTS employee (
     employeeID INT AUTO_INCREMENT PRIMARY KEY,
     firstname VARCHAR(255),
     lastname VARCHAR(255),
-    professionalID INT,
     hairSalonID INT,
-    FOREIGN KEY (professionalID) REFERENCES professional(professionalID),
     FOREIGN KEY (hairSalonID) REFERENCES hairSalon(hairSalonID) 
 );
 
@@ -104,9 +102,6 @@ VALUES ('Salon de coiffure XYZ', '123 Rue de la Beauté', 'Paris', '75001', 1);
 
 INSERT INTO service (name, description, price, duration, hairSalonID) 
 VALUES ('Coupe de cheveux', 'Une coupe de cheveux standard pour hommes ou femmes', 30.00, 30, 1);
-
-INSERT INTO employee (firstname, lastname, professionalID, hairSalonID)
-VALUES ('John', 'Doe', 1, 1);
 
 
 INSERT INTO request (professionalID, salon_name, address, city, postal_code, request_date, request_status) VALUES (2, 'Salon coiffure 2', '1 Rue des Double Monstres', 'Paris', '75012', '2024-02-05 14:30:00', 'pending');

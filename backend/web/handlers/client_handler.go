@@ -127,16 +127,18 @@ func (h *Handler) LoginClient() http.HandlerFunc {
 			return
 		}
 
-		token, err := middleware.GenerateJWT(client.ClientID)
+		token, err := middleware.GenerateJWT(client.ClientID, "client")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
 			err = json.NewEncoder(writer).Encode(struct {
 				Status string `json:"status"`
+				Role   string `json:"role"`
 				Token  string `json:"token"`
 			}{
 				Status: "success",
+				Role:   "client",
 				Token:  token,
 			})
 			if err != nil {
@@ -172,6 +174,37 @@ func (h *Handler) AddReservation() http.HandlerFunc {
 			Status:      "success",
 			Reservation: reservation,
 		})
+	}
+}
+
+func (h Handler) ResearchHairSalon() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		var name string
+
+		item := models.HairSalon{}
+		err := json.NewDecoder(request.Body).Decode(&item)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		name = item.Name
+		fmt.Println(name)
+		writer.Header().Set("Content-Type", "application/json")
+
+		hairSalon, err := h.Store.Client.ResearchHairSalon(name)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusBadRequest)
+			return
+		}
+		err = json.NewEncoder(writer).Encode(hairSalon)
+
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }
 

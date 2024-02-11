@@ -5,5 +5,5 @@ import (
 )
 
 type RequestStoreInterface interface {
-	RequestAddEstablishment(request models.Request) (int, error)
+	RequestAddEstablishment(request models.Request) (models.Request, error)
 }

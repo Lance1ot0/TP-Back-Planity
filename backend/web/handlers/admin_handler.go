@@ -5,7 +5,6 @@ import (
 	"TP-Back-Planity/web/models"
 	"TP-Back-Planity/web/utils"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -57,16 +56,18 @@ func (h *Handler) LoginAdmin() http.HandlerFunc {
 			return
 		}
 
-		token, err := middleware.GenerateJWT(id)
+		token, err := middleware.GenerateJWT(id, "admin")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		} else {
 			err = json.NewEncoder(writer).Encode(struct {
 				Status string `json:"status"`
+				Role   string `json:"role"`
 				Token  string `json:"token"`
 			}{
 				Status: "success",
+				Role:   "admin",
 				Token:  token,
 			})
 			if err != nil {
@@ -135,37 +136,6 @@ func (h *Handler) HandleRequest() http.HandlerFunc {
 		} else {
 			err = json.NewEncoder(writer).Encode(status)
 		}
-
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
-}
-
-func (h *Handler) GetHairSalon() http.HandlerFunc {
-	return func(writer http.ResponseWriter, request *http.Request) {
-		var name string
-
-		item := models.HairSalon{}
-		err := json.NewDecoder(request.Body).Decode(&item)
-
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		name = item.Name
-		fmt.Println(name)
-		writer.Header().Set("Content-Type", "application/json")
-
-		hairSalon, err := h.Store.Client.GetHairSalon(name)
-
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusBadRequest)
-			return
-		}
-		err = json.NewEncoder(writer).Encode(hairSalon)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)

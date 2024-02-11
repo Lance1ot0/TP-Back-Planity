@@ -3,7 +3,6 @@ package store
 import (
 	"TP-Back-Planity/web/models"
 	"database/sql"
-	"fmt"
 )
 
 func NewEmployeeStore(db *sql.DB) *EmployeeStore {
@@ -24,14 +23,14 @@ func (es *EmployeeStore) employeeExists(professionalID int) (bool, error) {
 }
 
 func (es *EmployeeStore) AddEmployee(employee models.Employee) (int, error) {
-	if exists, err := es.employeeExists(employee.ProfessionalID); err != nil {
-		return 0, err
-	} else if exists {
-		return 0, fmt.Errorf("employee already exists")
-	}
+	// if exists, err := es.employeeExists(employee.ProfessionalID); err != nil {
+	// 	return 0, err
+	// } else if exists {
+	// 	return 0, fmt.Errorf("employee already exists")
+	// }
 
-	result, err := es.Exec("INSERT INTO employee (firstname, lastname, professionalID, hairSalonID) VALUES (?, ?, ?, ?)",
-		employee.Firstname, employee.Lastname, employee.ProfessionalID, employee.HairSalonID)
+	result, err := es.Exec("INSERT INTO employee (firstname, lastname, hairSalonID) VALUES (?, ?, ?)",
+		employee.Firstname, employee.Lastname, employee.HairSalonID)
 	if err != nil {
 		return 0, err
 	}
@@ -42,4 +41,28 @@ func (es *EmployeeStore) AddEmployee(employee models.Employee) (int, error) {
 	}
 
 	return int(id), nil
+}
+
+func (es *EmployeeStore) GetAllEmployee(id int) ([]models.Employee, error) {
+	var employees []models.Employee
+
+	rows, err := es.Query("SELECT * FROM employee WHERE hairSalonID = ?", id)
+	if err != nil {
+		return []models.Employee{}, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var employee models.Employee
+		if err = rows.Scan(&employee.EmployeeID, &employee.Firstname, &employee.Lastname, &employee.HairSalonID); err != nil {
+			return []models.Employee{}, err
+		}
+		employees = append(employees, employee)
+	}
+
+	if err = rows.Err(); err != nil {
+		return []models.Employee{}, err
+	}
+
+	return employees, nil
 }

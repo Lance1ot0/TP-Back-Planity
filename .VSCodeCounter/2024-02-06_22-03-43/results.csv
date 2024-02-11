@@ -1,0 +1,32 @@
+"filename", "language", "Go Checksum File", "Go", "YAML", "Go Module File", "SQL", "Docker", "comment", "blank", "total"
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/Dockerfile", "Docker", 0, 0, 0, 0, 0, 0, 0, 2, 2
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/go.mod", "Go Module File", 0, 0, 0, 10, 0, 0, 0, 4, 14
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/go.sum", "Go Checksum File", 12, 0, 0, 0, 0, 0, 0, 1, 13
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/main/main.go", "Go", 0, 21, 0, 0, 0, 0, 0, 6, 27
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/config/database.go", "Go", 0, 32, 0, 0, 0, 0, 2, 8, 42
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/handlers/admin_handler.go", "Go", 0, 113, 0, 0, 0, 0, 0, 32, 145
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/handlers/client_handler.go", "Go", 0, 31, 0, 0, 0, 0, 1, 8, 40
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/handlers/professional_handler.go", "Go", 0, 137, 0, 0, 0, 0, 1, 24, 162
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/handlers/routes.go", "Go", 0, 44, 0, 0, 0, 0, 2, 13, 59
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/middleware/jwt.go", "Go", 0, 34, 0, 0, 0, 0, 7, 11, 52
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/administrator_model.go", "Go", 0, 8, 0, 0, 0, 0, 0, 2, 10
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/availability_model.go", "Go", 0, 8, 0, 0, 0, 0, 0, 2, 10
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/client_model.go", "Go", 0, 8, 0, 0, 0, 0, 0, 2, 10
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/employee_model.go", "Go", 0, 8, 0, 0, 0, 0, 0, 2, 10
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/hair_salon_model.go", "Go", 0, 9, 0, 0, 0, 0, 0, 2, 11
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/professional_model.go", "Go", 0, 10, 0, 0, 0, 0, 0, 2, 12
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/request_model.go", "Go", 0, 11, 0, 0, 0, 0, 0, 2, 13
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/reservation_model.go", "Go", 0, 9, 0, 0, 0, 0, 0, 2, 11
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/service_model.go", "Go", 0, 9, 0, 0, 0, 0, 0, 2, 11
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/models/time_slot_model.go", "Go", 0, 10, 0, 0, 0, 0, 0, 2, 12
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/admin_store.go", "Go", 0, 124, 0, 0, 0, 0, 1, 48, 173
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/client_store.go", "Go", 0, 47, 0, 0, 0, 0, 0, 16, 63
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/inter/admin_store_interface.go", "Go", 0, 14, 0, 0, 0, 0, 0, 3, 17
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/inter/client_store_interface.go", "Go", 0, 8, 0, 0, 0, 0, 0, 3, 11
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/inter/professional_store_interface.go", "Go", 0, 11, 0, 0, 0, 0, 0, 3, 14
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/professional_store.go", "Go", 0, 101, 0, 0, 0, 0, 0, 33, 134
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/store/store.go", "Go", 0, 17, 0, 0, 0, 0, 0, 4, 21
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/backend/web/utils/bcrypt.go", "Go", 0, 18, 0, 0, 0, 0, 0, 4, 22
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/database/init-script.sql", "SQL", 0, 0, 0, 0, 99, 0, 0, 10, 109
+"/Users/lancelotboyer/Documents/Dev/School/TP-Back-Planity/docker-compose.yml", "YAML", 0, 0, 23, 0, 0, 0, 0, 3, 26
+"Total", "-", 12, 842, 23, 10, 99, 0, 14, 256, 1256

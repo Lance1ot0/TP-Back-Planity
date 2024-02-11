@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	mdw "TP-Back-Planity/web/middleware"
 	database "TP-Back-Planity/web/store"
 	"net/http"
 
@@ -26,34 +27,40 @@ func NewHandler(store *database.Store) *chi.Mux {
 		})
 
 		r.Route("/client", func(r chi.Router) {
-			r.Get("/", handler.GetClient())
-			r.Get("/{id}", handler.GetClientById())
-			r.Post("/hairSalon", handler.GetHairSalon())
+			r.With(mdw.Authorization).Get("/", handler.GetClient())
+			r.With(mdw.Authorization).Get("/{id}", handler.GetClientById())
+
 			r.Post("/register", handler.AddClient())
 			r.Post("/login", handler.LoginClient())
+			r.With(mdw.Authorization).Post("/hairSalon", handler.ResearchHairSalon())
+			r.With(mdw.Authorization).Post("/reservation", handler.AddReservation())
 			r.Post("/reservation", handler.AddReservation())
 			r.Get("/{clientId}/reservations", handler.ListReservations())
 			r.Put("/reservation/{reservationId}", handler.CancelReservation())
 		})
 
 		r.Route("/admin", func(r chi.Router) {
-			// r.Get("/", handler.GetAdmin())
-			// r.Get("/{id}", handler.GetAdminById())
-			r.Get("/email/{email}", handler.GetAdminByEmail())
+			r.With(mdw.Authorization).Get("/email/{email}", handler.GetAdminByEmail())
+			r.With(mdw.Authorization).Get("/requests", handler.ListRequests())
+
 			r.Post("/login", handler.LoginAdmin())
-			r.Get("/requests", handler.ListRequests())
+
 			r.Put("/request/{id}", handler.HandleRequest())
 		})
 
 		r.Route("/professional", func(r chi.Router) {
-			r.Get("/", handler.GetProfessional())
-			r.Get("/{id}", handler.GetProfessionalById())
-			r.Get("/email/{email}", handler.GetProfessionalByEmail())
+			r.With(mdw.Authorization).Get("/", handler.GetProfessional())
+			r.With(mdw.Authorization).Get("/{id}", handler.GetProfessionalById())
+			r.With(mdw.Authorization).Get("/email/{email}", handler.GetProfessionalByEmail())
+			r.With(mdw.Authorization).Get("/hairSalon", handler.GetHairSalon())
+			r.With(mdw.Authorization).Get("/request", handler.GetRequest())
+			r.With(mdw.Authorization).Get("/employee/{id}", handler.GetAllEmployee())
+
 			r.Post("/register", handler.AddProfessional())
 			r.Post("/login", handler.LoginProfessional())
-			r.Post("/employee", handler.AddEmploye())
-			r.Post("/service", handler.AddService())
-			r.Post("/request", handler.RequestAddEstablishment())
+			r.With(mdw.Authorization).Post("/employee", handler.AddEmploye())
+			r.With(mdw.Authorization).Post("/service", handler.AddService())
+			r.With(mdw.Authorization).Post("/request", handler.RequestAddEstablishment())
 		})
 	})
 
