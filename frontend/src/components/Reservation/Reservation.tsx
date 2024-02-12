@@ -8,7 +8,9 @@ function Reservation() {
 
         if (res.success) {
             setReservations(res.res.data);
-        }
+        }  
+
+        console.log(res);
     }
 
     useEffect(() => {
@@ -18,19 +20,21 @@ function Reservation() {
     <div>
         <h1>Reservation</h1>
         <div>
-            <ul>
-                {reservations.map((reservation, index) => (
-                    <li key={index}>
-                        <p>ClientId : {reservation.clientID}</p>
-                        <p>EmployeeID : {reservation.employeeID}</p>
-                        <p>hairSalonID : {reservation.hairSalonID}</p>
-                        <p>reservationDate : {reservation.reservationDate}</p>
-                        <p>reservationID : {reservation.reservationID}</p>
-                        <p>reservationStatus : {reservation.reservationStatus}</p>
-                        <p>serviceID : {reservation.serviceID}</p>
-                    </li>
-                ))}
-            </ul>
+            {reservations !== null && (
+                <ul>
+                    {reservations.map((reservation, index) => (
+                        <li key={index}>
+                            <p>ClientId : {reservation.clientID}</p>
+                            <p>EmployeeID : {reservation.employeeID}</p>
+                            <p>hairSalonID : {reservation.hairSalonID}</p>
+                            <p>reservationDate : {reservation.reservationDate}</p>
+                            <p>reservationID : {reservation.reservationID}</p>
+                            <p>reservationStatus : {reservation.reservationStatus}</p>
+                            <p>serviceID : {reservation.serviceID}</p>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     </div>
   )
