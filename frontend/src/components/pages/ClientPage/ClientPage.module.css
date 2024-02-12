@@ -26,3 +26,9 @@
     cursor: pointer;
     transition: 0.3s;
   }
+
+  .main {
+    width: 65%;
+    display: flex;
+    flex-direction: column;
+  } 

@@ -208,15 +208,21 @@ func (h Handler) ResearchHairSalon() http.HandlerFunc {
 
 func (h *Handler) ListReservations() http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+
+		token := request.Header.Get("Authorization")
+		claims, err := middleware.DecodeJWT(token)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id := int(claims["user_id"].(float64))
+		fmt.Println(id)
 
 		var reservations []models.Reservation
 
-		writer.Header().Set("Content-Type", "application/json")
-		QueryId := chi.URLParam(request, "clientId")
-
-		clientId, _ := strconv.Atoi(QueryId)
-
-		reservations, err := h.Store.Client.ListReservations(clientId)
+		reservations, err = h.Store.Client.ListReservations(id)
 
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -278,5 +284,21 @@ func (h *Handler) GetSalonInfo() http.HandlerFunc {
 			Status:    "success",
 			Employees: employees,
 		})
+	}
+}
+
+func (h *Handler) test() http.HandlerFunc {
+	return func(writer http.ResponseWriter, request *http.Request) {
+		writer.Header().Set("Content-Type", "application/json")
+		token := request.Header.Get("Authorization")
+		claims, err := middleware.DecodeJWT(token)
+		if err != nil {
+			http.Error(writer, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		id := int(claims["user_id"].(float64))
+		fmt.Println(id)
+		writer.Write([]byte("test"))
 	}
 }

@@ -35,9 +35,10 @@ func NewHandler(store *database.Store) *chi.Mux {
 			r.Post("/hairsalon", handler.ResearchHairSalon())
 			r.With(mdw.Authorization).Post("/reservation", handler.AddReservation())
 			r.Post("/reservation", handler.AddReservation())
-			r.Get("/{clientId}/reservations", handler.ListReservations())
+			r.With(mdw.Authorization).Get("/reservations", handler.ListReservations())
 			r.Put("/reservation/{reservationId}", handler.CancelReservation())
 			r.Get("/hairSalon/{hairSalonId}", handler.GetSalonInfo())
+			r.With(mdw.Authorization).Get("/test", handler.test())
 		})
 
 		r.Route("/admin", func(r chi.Router) {

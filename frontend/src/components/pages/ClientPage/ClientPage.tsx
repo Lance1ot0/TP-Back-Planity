@@ -1,6 +1,7 @@
 import style from './ClientPage.module.css'
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import Reservation from '../../Reservation/Reservation';
 
 function ClientPage() {
     const navigate = useNavigate();
@@ -33,12 +34,17 @@ function ClientPage() {
   return (
     <div className={style.container}>
         <div className={style.menu}>
-                <h1 style={{ fontSize: '38px' }}>Client Page</h1>
-                <button
-                    className={style.logoutButton}
-                    onClick={() => { logout(); }}
-                >Déconnexion</button>
-            </div>
+            <h1 style={{ fontSize: '38px' }}>Client Page</h1>
+            <button
+                className={style.logoutButton}
+                onClick={() => { logout(); }}
+            >Déconnexion</button>
+        </div>
+
+        <div className={style.main}>
+            <h1>Rendez-vous</h1>
+            <Reservation />
+        </div>
     </div>
   )
 }
