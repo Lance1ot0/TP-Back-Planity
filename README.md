@@ -51,7 +51,7 @@ Ce guide fournit des instructions pour mettre en place et exécuter le projet à
 
 ### Accès au projet
 
-Une fois ces étapes effectuées, vous pouvez accéder à l'application à l'adresse [http://localhost:3000](http://localhost:3000) dans votre navigateur web.
+Une fois ces étapes effectuées, vous pouvez accéder à l'application, à l'adresse spécifié dans votre terminal, dans votre navigateur web.
 
 ---
 **Remarque :** Assurez-vous que les ports nécessaires ne sont pas déjà utilisés par d'autres services sur votre machine.
